@@ -36,7 +36,7 @@ public class SimuGUI implements Runnable, ActionListener{
 		while(isOn){
 			this.accordeonPanel.repaint();
 			try {
-				Thread.sleep(MoteurSimu.delay);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
