@@ -27,6 +27,7 @@ public class MoteurSimu implements Reveil {
 
 	public void reveil() {
 		processPosition();
+		this.simuGUI.repaintGui();
 	}
 
 	public void processPosition() {
