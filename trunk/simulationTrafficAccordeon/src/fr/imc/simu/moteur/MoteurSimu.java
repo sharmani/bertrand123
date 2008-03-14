@@ -1,13 +1,12 @@
 package fr.imc.simu.moteur;
 
-import imc.test.simu.gui.SimuGUI;
+import fr.imc.simu.gui.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import fr.imc.simu.sequenceur.Reveil;
-import fr.imc.simu.sequenceur.Sequenceur;
 
 public class MoteurSimu implements Reveil {
 	
