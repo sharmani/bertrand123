@@ -1,5 +1,5 @@
 package fr.imc.simu.sequenceur;
-interface Reveil {
+public interface Reveil {
 
 	public void reveil();
 }
