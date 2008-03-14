@@ -100,7 +100,7 @@ public class SimuGUI implements Runnable, ActionListener{
 			} catch (NumberFormatException e1) {
 			}
 			ArrayList<Voiture> listVoiture;
-			listVoiture = (ArrayList<Voiture>) this.moteur.getListVoiture();
+			listVoiture = (ArrayList<Voiture>) this.moteur.getLVoiture();
 			Voiture voiture;
 			voiture = listVoiture.get(numCar);
 			voiture.setVitesse(0);
@@ -113,7 +113,7 @@ public class SimuGUI implements Runnable, ActionListener{
 			} catch (NumberFormatException e1) {
 			}
 			ArrayList<Voiture> listVoiture;
-			listVoiture = (ArrayList<Voiture>) this.moteur.getListVoiture();
+			listVoiture = (ArrayList<Voiture>) this.moteur.getLVoiture();
 			Voiture voiture;
 			voiture = listVoiture.get(numCar);
 			if (voiture.getVitesse() > 0.0077){
@@ -129,7 +129,7 @@ public class SimuGUI implements Runnable, ActionListener{
 			} catch (NumberFormatException e1) {
 			}
 			ArrayList<Voiture> listVoiture;
-			listVoiture = (ArrayList<Voiture>) this.moteur.getListVoiture();
+			listVoiture = (ArrayList<Voiture>) this.moteur.getLVoiture();
 			Voiture voiture;
 			voiture = listVoiture.get(numCar);
 			voiture.setAcceleration(0.0277/20000d);

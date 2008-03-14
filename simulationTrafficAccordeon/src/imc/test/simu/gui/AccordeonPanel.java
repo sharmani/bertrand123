@@ -41,7 +41,7 @@ public class AccordeonPanel extends JPanel {
 		if (moteur == null){
 			return;
 		}else{
-			for(Voiture voiture : moteur.getListVoiture()){
+			for(Voiture voiture : moteur.getLVoiture()){
 				position = (voiture.getPosition()*500)/1000.0d;
 				g.drawLine((int)position, 0,(int)position, 50);				
 			}
