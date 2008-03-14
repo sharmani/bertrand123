@@ -1,13 +1,15 @@
 package fr.imc.simu.moteur;
 
+import imc.test.simu.gui.SimuGUI;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import fr.imc.embouteillage.IAwakable;
-import fr.imc.embouteillage.gui.SimuGUI;
+import fr.imc.simu.sequenceur.Reveil;
+import fr.imc.simu.sequenceur.Sequenceur;
 
-public class MoteurSimu implements IAwakable {
+public class MoteurSimu implements Reveil {
 	
 	SimuGUI simuGUI;
 	private List<Voiture> lVoiture = new ArrayList<Voiture>();
@@ -24,9 +26,8 @@ public class MoteurSimu implements IAwakable {
 		lVoiture = v;
 	}
 
-	public void awake() {
+	public void reveil() {
 		processPosition();
-		this.simuGUI.repaintGui();
 	}
 
 	public void processPosition() {
