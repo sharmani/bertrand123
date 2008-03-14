@@ -1,8 +1,8 @@
 package imc.test.simu.gui;
 
 
-import imc.test.simulateur.MoteurSimu;
-import imc.test.simulateur.Voiture;
+import fr.imc.simu.moteur.MoteurSimu;
+import fr.imc.simu.moteur.Voiture;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
