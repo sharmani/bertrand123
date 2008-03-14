@@ -1,4 +1,4 @@
-package imc.test.simu.gui;
+package fr.imc.simu.gui;
 
 
 import fr.imc.simu.moteur.MoteurSimu;
