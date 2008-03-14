@@ -1,14 +1,14 @@
 package imc.test.simu.gui;
 
 
-import imc.test.simulateur.MoteurSimu;
-import imc.test.simulateur.Voiture;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
+import fr.imc.simu.moteur.MoteurSimu;
+import fr.imc.simu.moteur.Voiture;
 
 /**
  * @author Administrateur
