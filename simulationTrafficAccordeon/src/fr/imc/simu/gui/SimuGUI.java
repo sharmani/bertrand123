@@ -137,4 +137,10 @@ public class SimuGUI implements Runnable, ActionListener{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	public void repaintGUI() {
+		this.accordeonPanel.repaint();
+	}
 }
