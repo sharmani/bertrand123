@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fichier JNLP  pour Simu Accordeon-->
+
+<jnlp spec="1.0+"  codebase="http://bertrand.guiral.free.fr/"   href="simu_accordeon.jnlp">
+   <information>
+      <title>Simulation traffic sur autoroute: Acoordeon</title>
+      <vendor>bg</vendor>
+      <description>Simulation traffic sur autoroute: Acoordeon</description>
+      <homepage href="http://bertrand.guiral.free.fr"/>
+      <description kind="short">Simulation ultra simple montrant comment une perturbation s'amplifie, se propage et se maintient  sur une autoroute</description>
+      <offline-allowed/>
+   </information>
+   <resources>     
+   	<jar href="bgSimuAccordeon.jar"/>   
+	<j2se version="1.5+"    href="http://java.sun.com/products/autodl/j2se"/>
+   </resources>
+   <application-desc main-class="bg.simuAccordeon.MainAccordeon"/>
+</jnlp>
+

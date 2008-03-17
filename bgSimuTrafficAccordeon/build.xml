@@ -1,0 +1,45 @@
+<project name="bgSimuAccordeon" default="makeJar">
+
+	 <property name="src" value="${basedir}/src"/>
+	 <property name="build" value="${basedir}/build_ant"/>
+	 <property name="jar" value="${basedir}/jar_ant"/>
+		    
+	<tstamp>
+		      <format property="touch.time" pattern="yyyy_MM_dd_hh_mm"/>
+    </tstamp>
+
+
+	 <target name="clean">
+	        <delete dir="${targetdir}"/>
+	        <mkdir dir="${targetdir}"/>
+	  </target>
+	
+	 <target name="makeJar">
+	 	    <delete dir="${build}"/>
+	 	    <delete dir="${jar}"/>
+	 		<mkdir dir="${build}"/>
+	 		<mkdir dir="${jar}"/>
+	 	 	 <javac srcdir="${src}"   destdir="${build}"   debug="on"  source="1.5" />
+ 	    	 <jar destfile="${jar}/bgSimuAccordeon.jar">
+	 	    	<fileset dir="${build}" excludes="**/test*.class"/>
+	 	    </jar>
+
+	 </target>
+
+    
+	
+	
+	 
+	
+
+	<target name="deploy"  description="deploy">
+		        <copy file="simu_accordeon.jnlp" todir="${jar}"/>
+		        <copy file="simu_accordeon.html" todir="${jar}"/>
+
+				<ftp password="antoiben" server="ftpperso.free.fr" userid="bertrand.guiral">
+					<fileset dir="${jar}"/>
+				</ftp>
+	</target>
+  
+   
+</project>
