@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.bg.util.user.User" table="forum_users_05">
+ 		<id name="user_id" column="user_id">
+            <generator class="native"/>
+        </id>
+        <property name="name"/>
+        <property name="password"/>
+        <property name="mail"/>
+        <property name="dateCreation"/>
+        <property name="langage"/>
+        <property name="date"/>
+        <property name="stateUser"/>
+        <property name="mailDaily"/>
+        
+         <list name="roles"  table="forum_user_roles_02" lazy="false">
+    		<key column="user_id_"/>
+    		<list-index column="sortOrder"/>
+    		<many-to-many column="id_role" class="com.bg.util.user.Role"/>
+		</list>
+         
+       
+    </class>
+    
+     <class name="com.bg.util.user.Role" table="forum_role_02">
+ 		<id name="id_role" column="id_role">
+            <generator class="native"/>
+        </id>
+        <property name="roleName" unique="true" />
+      
+     </class>
+
+</hibernate-mapping>
