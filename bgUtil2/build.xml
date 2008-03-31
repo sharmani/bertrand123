@@ -1,0 +1,63 @@
+<project name="bgUtil" default="archiveSource">
+
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" />
+		<taskdef name="list" classname="org.apache.catalina.ant.ListTask" />
+		<taskdef name="reload"	classname="org.apache.catalina.ant.ReloadTask" />
+		<taskdef name="remove"	classname="org.apache.catalina.ant.RemoveTask" />
+
+		<!-- Configure the custom Ant tasks for the Manager application -->
+
+
+		<tstamp>
+			<format property="touch.time" pattern="yyyy_MM_dd_hh_mm" />
+		</tstamp>
+
+	
+	<target name="clean" >
+		<delete dir="build"/>
+		<mkdir dir="build"/>
+	</target>
+
+	<target name="makeJar" >
+		    	<jar destfile="build/bgUtil2.jar" >
+		    	  <fileset dir="target/classes">
+		    	    <exclude name="*.java"/>
+		    	  </fileset>
+		    	</jar>
+		 </target>
+	<target name="makeWar" >
+		   <copy todir="src/main/webapp/WEB-INF/lib">
+		    <fileset dir="build">
+		      <exclude name="**/*.war"/>
+		    </fileset>
+		    </copy>
+
+	    	<jar destfile="build/bgUtil2.war" >
+	    	  <fileset dir="src/main/webapp">
+	    	    <exclude name="*.java"/>
+	    	  </fileset>
+	    	</jar>
+		   <unzip src="build/bgUtil2.war"
+		       dest="build/bgUtil2_war">			    	  
+		   </unzip>
+	 </target>
+	
+	 <target name="deployLocalHost" description="Deploy Local">
+					  	<echo message=""/>
+					    <deploy url="http://localhost:8080/manager" username="shubaka" password="shubaka"  path="/bgUtil2" war="build/bgUtil2.war" update="true" />
+					  	<echo message=" deployed  to localhost:8080 path:bgUtil2"/>
+	</target>
+	
+	
+	<target name="archiveSource"  description="Archive sources">
+		 <delete dir="archive"/>
+		 <mkdir dir="archive"/>
+		 <zip destfile="archive/bgUtil2.zip" basedir="src">
+		 </zip>
+		<ftp password="antoiben" server="ftpperso.free.fr" userid="bertrand.guiral">
+			<fileset dir="archive"/>
+		</ftp>
+	</target>
+  
+   
+</project>
