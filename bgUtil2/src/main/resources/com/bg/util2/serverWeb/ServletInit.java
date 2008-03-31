@@ -2,13 +2,10 @@ package com.bg.util2.serverWeb;
 
 // com.bg.util2.serverWeb.ServletInit
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
@@ -25,7 +22,13 @@ import com.bg.util2.spring.UtilSpring;
 
 public class ServletInit extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final Object ACTION_GET_LOG = "getLog";
+	private static final Object ACTION_GET_LOG_INFO = "getLogInfo";
 
 	private static ServletInit instance;
 
@@ -55,17 +58,27 @@ public class ServletInit extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String r = "<h2>" + HostName.hostname() + "</h2>";
 		String action = "" + request.getParameter("action");
+		String name = request.getParameter("name");
+		String iStr = request.getParameter("i");
 		if (action.equals(ACTION_GET_LOG)) {
-			String name = request.getParameter("name");
-			String iStr = request.getParameter("i");
 			r += " <br/>Get Log No Implemented Yet  name:" + name + "  i: " + iStr;
 			copyLogFile(name, iStr, response);
 			return;
+		} else if (action.equals(ACTION_GET_LOG_INFO)){
+				r += getLogInfo(name); 
 		} else {
 			r += " <br/>" + this.getMenuLogHtml();
 		}
 		r = "<html><head> <title>init " + HostName.hostname() + " </title></head> <body>" + r + "</body></html>";
 		response.getWriter().write(r);
+	}
+
+	private String getLogInfo(String name) {
+		String r ="";
+		r +="<h2>LogInfos "+name+" </h2>";
+		File f = LoggerFactoryBg.getFile(name);
+		r += "file: "+f.getAbsolutePath()+" exists: "+f.exists()+" length:"+f.length()+" ";
+		return r;
 	}
 
 	private void copyLogFile(String name, String iStr, HttpServletResponse response) {
@@ -83,6 +96,7 @@ public class ServletInit extends HttpServlet {
 
 	private void copyLogFile(String name, int i, HttpServletResponse response) {
 		try {
+			response.setContentType("application/rtf");			
 			File f = LoggerFactoryBg.getFile(name, i);;
 			OutputStream out = response.getOutputStream();
 			UtilCopy.copy(f, out);
@@ -98,9 +112,8 @@ public class ServletInit extends HttpServlet {
 		Collection<String> collectNames = hLoggers.values();
 		TreeSet<String> ts = new TreeSet<String>(collectNames);
 		for (String name : ts) {
-			r += "\n<tr>";
-			int i = 0;
-			r += "<td>" + getLinkFileLog(name, 0, name) + "</td><td>" + getLinkFileLog(name, 1, "old") + " " + getLinkFileLog(name, 2, ".") + "</td>";
+			r += "\n<tr>";			
+			r += "<td>" + getLinkFileLog(name, 0, name) + "</td><td>" + getLinkFileLog(name, 1, "old") + " " + getLinkFileLog(name, 2, ".")+"</td><td>" +getLinkInfoLog( name ,"i")+ "</td>";
 			r += "</tr>";
 		}
 		r += "\n</table>";
@@ -110,7 +123,10 @@ public class ServletInit extends HttpServlet {
 	private String getLinkFileLog(String name, int i, String label) {
 		String link = "<a href='" + this.getServletName() + "?action=" + ACTION_GET_LOG + "&name=" + name + "&i=" + i + "'>" + label + "</a>";
 		return link;
-
+	}
+	private String getLinkInfoLog(String name ,String label) {
+		String link = "<a href='" + this.getServletName() + "?action=" + ACTION_GET_LOG_INFO + "&name=" + name + "'>" + label + "</a>";
+		return link;
 	}
 
 	public File getWEB_INF() {
