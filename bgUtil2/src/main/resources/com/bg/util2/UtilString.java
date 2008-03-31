@@ -143,7 +143,7 @@ public class UtilString {
         if (list == null) {
             return null;
         }
-        Iterator ite = list.iterator();
+        Iterator<Object> ite = list.iterator();
         StringBuffer r = new StringBuffer();
         while (ite.hasNext()) {
             r.append("" + ite.next());
