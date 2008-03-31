@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
