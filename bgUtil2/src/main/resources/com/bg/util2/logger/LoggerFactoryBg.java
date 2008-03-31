@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class LoggerFactoryBg {
+	
 	public static File dirLog = new File("logs");
 	static {
 		try {
@@ -29,6 +31,8 @@ public class LoggerFactoryBg {
 				System.out.println("------------------getLogger  name:" + name);
 				logger.setUseParentHandlers(false);
 				FileHandler fileHandler = new FileHandler(dirLog.getName() + File.separatorChar + name + "%g.log", 20000, 3);
+				Formatter newFormatter = new FormatterBg();
+				fileHandler.setFormatter(newFormatter);
 				logger.addHandler(fileHandler);
 				hLoggers.put(logger, name);
 			} catch (Exception e) {
@@ -63,6 +67,10 @@ public class LoggerFactoryBg {
 		} else if (dir.exists()) {
 			dir.delete();
 		}
+	}
+
+	public static HashMap<Logger, String> getHLoggers() {
+		return hLoggers;
 	}
 
 }
