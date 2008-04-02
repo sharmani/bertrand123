@@ -601,8 +601,12 @@ public class UtilString {
     public static String toStringHtml(String s){
     	 return s.replace("\n", "<br/>");
     }
-    	   
+    @Deprecated
     public static String toStringHtml(Throwable e){
+    	return toHtml(e);
+    }
+    	   
+    public static String toHtml(Throwable e){
         String comment="Exception "+e.getMessage();
         try {
             for(int i=0;i<e.getStackTrace().length;i++){
