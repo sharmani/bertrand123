@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
@@ -22,6 +23,8 @@ import com.bg.util2.spring.UtilSpring;
 
 public class ServletInit extends HttpServlet {
 
+	
+	private Logger logger = LoggerFactoryBg.getLogger("ServletInit");
 	/**
 	 * 
 	 */
@@ -35,13 +38,16 @@ public class ServletInit extends HttpServlet {
 	public ServletInit() {
 		super();
 		instance = this;
-
 	}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		this.initSpring();
+		try {
+			this.initSpring();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "ServletInit "+e); 
+		}
 	}
 
 	public void destroy() {
@@ -57,6 +63,7 @@ public class ServletInit extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String r = "<h2>" + HostName.hostname() + "</h2>";
+		r += "Version: "+serialVersionUID;
 		String action = "" + request.getParameter("action");
 		String name = request.getParameter("name");
 		String iStr = request.getParameter("i");
@@ -121,7 +128,7 @@ public class ServletInit extends HttpServlet {
 	}
 
 	private String getLinkFileLog(String name, int i, String label) {
-		String link = "<a href='" + this.getServletName() + "?action=" + ACTION_GET_LOG + "&name=" + name + "&i=" + i + "'>" + label + "</a>";
+		String link = "<a href='" + this.getServletName() + "?action=" + ACTION_GET_LOG + "&name=" + name + "&i=" + i + "&a=.txt'>" + label + "</a>";
 		return link;
 	}
 	private String getLinkInfoLog(String name ,String label) {
@@ -169,8 +176,13 @@ public class ServletInit extends HttpServlet {
 	}
 
 	private void initSpring() {
-		File webInf = getWEB_INF();
-		UtilSpring.getInstance().initSpringConfigFromNameRootThread(webInf, "spring", true);
+		try {
+			File webInf = getWEB_INF();
+			UtilSpring.getInstance().initSpringConfigFromNameRootThread(webInf, "spring", true);
+		} catch (Throwable e) {
+			System.out.println("initSpring Exception: "+e.getClass()+"  "+e.getMessage());
+			this.logger.warning("initSpring Exception : "+e);
+		}
 	}
 
 	public static ServletInit getInstance() {
