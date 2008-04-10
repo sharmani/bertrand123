@@ -9,6 +9,7 @@ sommet:G
 sommet:H
 sommet:I
 sommet:J
+fin:fin
 arc:A-F
 arc:F-E
 arc:A-G
