@@ -9,9 +9,8 @@ import java.util.StringTokenizer;
 
 public class Main {
 	private HashMap<Integer, String> mesIndices = new HashMap<Integer, String>();
-	public GrapheMatrix monGraph = new GrapheMatrix();
-	public int s;
-	public boolean[] marque;
+	private GrapheMatrix monGraph = new GrapheMatrix();
+	
 
 	public Main() {
 
