@@ -1,0 +1,14 @@
+oriente:true
+sommet:A
+sommet:B
+sommet:C
+sommet:D
+sommet:E
+fin:fin
+arc:A-B
+arc:B-C
+arc:C-A
+arc:C-D
+arc:C-E
+arc:D-E
+arc:E-D
