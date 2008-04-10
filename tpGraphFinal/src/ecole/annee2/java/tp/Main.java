@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-
 public class Main {
 	private HashMap<Integer, String> mesIndices = new HashMap<Integer, String>();
 	public GrapheMatrix monGraph = new GrapheMatrix();

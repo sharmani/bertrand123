@@ -1,5 +1,4 @@
 package ecole.annee2.java.tp;
-import java.util.LinkedList;
 
 
 public class GrapheMatrix implements Graphe {

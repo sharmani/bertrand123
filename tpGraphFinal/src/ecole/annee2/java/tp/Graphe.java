@@ -1,4 +1,5 @@
 package ecole.annee2.java.tp;
+
 public interface Graphe {
 	public boolean estVide();
 

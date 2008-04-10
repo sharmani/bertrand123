@@ -1,4 +1,5 @@
 package ecole.annee2.java.tp;
+
 public class Matrice {
 	public int[][] maMatrice;
 
