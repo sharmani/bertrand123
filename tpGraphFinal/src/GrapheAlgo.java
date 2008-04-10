@@ -1,5 +1,7 @@
 import java.util.*;
 
+import ecole.annee2.java.tp.Graphe;
+
 public class GrapheAlgo {
 	private static void parcoursProfondeur(Graphe g, int s, boolean[] marque) {
 		for (int i = g.premierSuccesseur(s); i != 1; i = g.successeurSuivant(s,
@@ -56,7 +58,8 @@ public class GrapheAlgo {
 		parents[s] = 1;
 		while (!(file.isEmpty())) {
 			s = ((Integer) file.removeLast()).intValue();
-			for (int i = g.premierSuccesseur(s); i != 1; i = g.successeurSuivant(s, i)) {
+			for (int i = g.premierSuccesseur(s); i != 1; i = g
+					.successeurSuivant(s, i)) {
 				if (marque[i] == false) {
 					marque[i] = true;
 					distances[i] = distances[s] + 1;
