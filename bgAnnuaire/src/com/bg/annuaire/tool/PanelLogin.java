@@ -13,6 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.bg.annuaire.test.UtilHibernateBg;
+import com.bg.annuaire.tool.company.CompanyFactory;
 import com.bg.util.hibernate.UtilHibernate;
 
 public class PanelLogin extends JPanel {
@@ -53,6 +54,8 @@ public class PanelLogin extends JPanel {
 	private void login() {
 		System.out.println("login");
 		UtilHibernateBg.getInstance().initHibernate(this.textFieldUser.getText(),this.textFieldPAssword.getText());
+		CompanyFactory.getInstance().updateListCompanyFromBdd();
+		ToolAnuaireGui.getInstance().listCompanies();
 	}
 
 }
