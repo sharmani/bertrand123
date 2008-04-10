@@ -186,7 +186,7 @@ public class ToolAnuaireGui {
 		this.textFieldInfos.setText(text);
 	}
 
-	private void listCompanies() {
+	public void listCompanies() {
 		System.out.println("ListCompanies size:"+CompanyFactory.getInstance().getList().size());
 		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
 		this.panelListCompanies.updateList();
