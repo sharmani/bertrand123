@@ -1,0 +1,83 @@
+<project name="bgAnnuaire" default="makeUnsignedJar" basedir=".">
+    <description>Construction du jar </description>
+ 
+	<property name="build" location="build"/>
+	<property name="classes" location="classes_ANT"/>
+    <property name="src" location="src"/>
+  	
+   
+  <target name="clean"  description="clean up" >
+       <delete dir="${build}"/>
+  </target>
+	
+  <target name="init" depends="clean">
+    <tstamp/>
+  </target>
+
+	<target name="compileSource" depends="init" description="utilise Midp classes">
+		  <echo message="classes=${classes}" /> 
+
+		  <delete dir="${classes}" /> 
+		  <mkdir dir="${classes}" /> 
+		  <echo message="javac src: ${src} to classes: ${classes}" /> 
+		  <javac destdir="${classes}" srcdir="${src}"  classpath="" target="1.5" source="1.5" optimize="on" debug="off" /> 
+   </target>
+
+  
+	
+	<target name="makeUnsignedJar" depends="compileSource">
+		 <delete dir="${build}" /> 
+		 <mkdir dir="${build}" /> 
+		 <jar destfile="${build}/bgAnnuaire_unsigned.jar" basedir="${classes}" />
+		 <signjar jar="${build}/bgAnnuaire_unsigned.jar" alias="bg" storepass="shubaka" signedjar="${build}/bgAnnuaire.jar"/>
+		 	<copy file="${build}/bgAnnuaire.jar" tofile="${build}/bgAnnuaire.zip"/>
+		 	<copy file="bgAnnuaire.jnlp" tofile="${build}/bgAnnuaire.jnlp"/>
+			<copy file="bgAnnuaire.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"/>
+	</target>
+			
+	   <target name="deployLocal">
+	   		 <copy file="bgAnnuaire_localhost.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"/>
+			 <copy file="${build}/bgAnnuaire.jar" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jar"/>
+		</target>
+			 		
+	   <target name="deploy_bertrand.guiral.free.fr" >
+	        <delete file="${build}/bgAnnuaire.jnlp"/>
+	   		<copy file="bgAnnuaire.jnlp" tofile="${build}/bgAnnuaire.jnlp"/>
+		 	<copy file="annuaire.html" tofile="${build}/annuaire.html"/>
+		 	<copy file="bddCompanies.xml" tofile="${build}/bddCompanies.xml"/>
+		 	<copy file="bddCompanies.html" tofile="${build}/bddCompanies.html"/>
+		 	<ftp server="ftpperso.free.fr"  userid="bertrand.guiral"  password="antoiben"  >
+	   	   	  <fileset dir="${build}">
+ 	      		<include name="bgAnnuaire.jnlp"/>
+ 	      		<include name="bgAnnuaire.jar"/>
+	      		<include name="annuaire.html"/>
+	      		<include name="bddCompanies.html"/>
+	      		<include name="bddCompanies.xml"/>
+	   	      </fileset>
+	   	    </ftp>
+		</target>
+			 		
+		 		
+	 <target name="makeJNLP">	 	
+		 <echo message="codeBase: ${codebase}"/>
+	 	 <loadfile property="jnlp"   srcFile="bgAnnuaire.jnlp"/>
+	 	 <property name="jnlp2" value="${jnlp}"/>
+	 	<echo message="jnlp2: ${jnlp2}"/>
+	 	<echo file="testJnlp.jnlp" >${jnlp}</echo>
+    </target>
+			
+	<target name="genKey" description="Genere les keys de signature des jars . Ne doit etre utilised qu'une fois">
+		<genkey alias="bg" storepass="shubaka" >
+			 	  <dname>
+				 	    <param name="CN" value="bg"/>
+				 	    <param name="OU" value="bg"/>
+				 	    <param name="O"  value="bg"/>
+				 	    <param name="C"  value="FR"/>
+			 	  </dname>
+	    </genkey>
+    </target>
+    
+    
+
+</project>
+
