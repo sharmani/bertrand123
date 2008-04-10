@@ -25,7 +25,8 @@ public class Main {
 			// création du graph
 
 			// selection et lecture du fichier
-			File fGraph = new File("C:\\test.txt");
+			File fGraph = new File("test.txt");
+			System.out.println("fGraph :: "+fGraph.getAbsolutePath()+"  exists: "+fGraph.exists())
 			FileReader fReader = new FileReader(fGraph);
 			BufferedReader bReader = new BufferedReader(fReader);
 			String line = null;
