@@ -1,6 +1,8 @@
 
 
-package ecole.annee2.java.tp;
+package ecole.annee2.java.poubelle;
+
+import ecole.annee2.java.tp.Graphe;
 
 
 public class GrapheMatrixNonOriente implements Graphe {
