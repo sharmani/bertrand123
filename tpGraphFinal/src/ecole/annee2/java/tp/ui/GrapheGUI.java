@@ -135,8 +135,8 @@ public class GrapheGUI implements ILogger{
 
 	protected void launchDijkstra() {
 		this.labelResult.setText("");
-		String sDebut=this.textFieldSommetDepart.getText();
-		String sFin=this.textFieldSommetArrivee.getText();
+		String sDebut=this.textFieldSommetDepart.getText().toUpperCase();
+		String sFin=this.textFieldSommetArrivee.getText().toUpperCase();
 		log("Depart "+sDebut);
 		log("Arrivés "+sFin);
 		GrapheMatrix gm = new GrapheMatrix(this.fileGraph,null);
@@ -179,7 +179,7 @@ public class GrapheGUI implements ILogger{
 
 	}
 
-	@Override
+	
 	public void log(String s) {
 		this.labelResult.append(s+"\n");
 		System.out.println("log   :"+s);
