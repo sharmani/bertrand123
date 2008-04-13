@@ -9,7 +9,7 @@ public interface Graphe {
 
 	public int degreMoins(int s);
 
-	public void ajouterArc(int s1, int s2);
+	public void ajouterArc(int s1, int s2,int cout);
 
 	public void supprimerArc(int s1, int s2);
 

@@ -8,13 +8,15 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
+
 	private HashMap<Integer, String> mesIndices = new HashMap<Integer, String>();
+
 	private GrapheMatrix monGraph = new GrapheMatrix();
-	
 
 	public Main() {
 
 		parseFileGraph();
+		System.out.println("---mon graph---"+monGraph);
 		calculCfc(monGraph);
 		// parcoursProfondeur(monGraph,0);
 		// cfc(monGraph);
@@ -25,31 +27,27 @@ public class Main {
 
 		try {
 			// création du graph
-
 			// selection et lecture du fichier
-
 			File fGraph = new File("test.txt");
-			System.out.println("fGraph :: " + fGraph.getAbsolutePath()
-					+ "  exists: " + fGraph.exists());
-
+			System.out.println("fGraph :: " + fGraph.getAbsolutePath() + "  exists: " + fGraph.exists());
 			FileReader fReader = new FileReader(fGraph);
 			BufferedReader bReader = new BufferedReader(fReader);
 			String line = null;
 			while ((line = bReader.readLine()) != null) {
 				StringTokenizer stLine = new StringTokenizer(line, ":");
 				String key = stLine.nextToken();
-				String value = stLine.nextToken();
-				if (key.equals("oriente")) {
+				String value = stLine.nextToken().trim();
+				if (key.equalsIgnoreCase("oriente")) {
 
 					System.out.println("test oriente parse: " + value);
-					if (value.equals("true")) {
-						// setOriente(true);
+					if (value.equalsIgnoreCase("true")) {
+						monGraph.setOriented(true);
 					} else {
-						// traitement a faire
+						monGraph.setOriented(false);
 					}
 
 				}
-				if (key.equals("sommet")) {
+				if (key.equalsIgnoreCase("sommet")) {
 
 					getMesIndices().put(monGraph.getNbSommet(), value);
 					monGraph.setNbSommet(monGraph.getNbSommet() + 1);
@@ -59,30 +57,27 @@ public class Main {
 					// System.out.println("---Nb de sommet:"+
 					// monGraph.getNbSommet());
 				}
-				if (key.equals("fin")) {
+				if (key.equalsIgnoreCase("fin")) {
 					int sommets = monGraph.getNbSommet();
 					int[][] matrix = new int[sommets][sommets];
 					monGraph.setMatrix(matrix);
 					System.out.println("---Matrice:" + monGraph.getMatrix());
 				}
-				if (key.equals("arc")) {
+				if (key.equalsIgnoreCase("arc")) {
 					int cout;
 					StringTokenizer stArc = new StringTokenizer(value, "-");
-					String nameSommet1 = stArc.nextToken();
-					String nameSommet2 = stArc.nextToken();
+					String nameSommet1 = stArc.nextToken().trim();
+					String nameSommet2 = stArc.nextToken().trim();
 					if (stArc.countTokens() == 1) {
-						cout = Integer.parseInt(stArc.nextToken());
+						cout = Integer.parseInt(stArc.nextToken().trim());
 					} else {
-						cout = 0;
+						cout = 1;
 					}
-					int s1 = getKeyByValue(mesIndices, nameSommet1);
-					int s2 = getKeyByValue(mesIndices, nameSommet2);
-					monGraph.ajouterArc(s1, s2);
-
+					int s1 = getKeyByValue(this.mesIndices, nameSommet1);
+					int s2 = getKeyByValue(this.mesIndices, nameSommet2);
+					monGraph.ajouterArc(s1, s2,cout);
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -126,20 +121,17 @@ public class Main {
 		while (!(file.isEmpty())) {
 			s = ((Integer) file.removeLast()).intValue();
 			System.out.println("test remove---" + mesIndices.get(s));
-			for (int i = g.premierSuccesseur(s); i != 1; i = g
-					.successeurSuivant(s, i)) {
+			for (int i = g.premierSuccesseur(s); i != 1; i = g.successeurSuivant(s, i)) {
 				if (marque[i] == false) {
 					marque[i] = true;
 					file.addFirst(new Integer(i));
-					System.out.println("Parcours Largeur---"
-							+ mesIndices.get(i));
+					System.out.println("Parcours Largeur---" + mesIndices.get(i));
 				}
 			}
 		}
 	}
 
-	private void parcoursProfondeur(Graphe g, int s, boolean[] marque,
-			HashMap<Integer, String> mesIndices) {
+	private void parcoursProfondeur(Graphe g, int s, boolean[] marque, HashMap<Integer, String> mesIndices) {
 		// System.out.println("Parcours Prof---"+g.premierSuccesseur(s));
 		for (int i = 0; i < g.getNbSommet(); i = g.successeurSuivant(s, i)) {
 			if (marque[i] == false) {
@@ -197,25 +189,27 @@ public class Main {
 				}
 			}
 			if (cfc) {
-				System.out.println("---debut cfc---");
+				System.out.println("---debut composante---");
 			}
 			while (!pile.isEmpty()) {
 				System.out.println(mesIndices.get(pile.removeFirst()));
 			}
 			if (cfc) {
-				System.out.println("---fin cfc---");
+				System.out.println("---fin composante---");
 			}
 			cfc = false;
 		}
 
 		for (int i = 0; i < n; i++) {
 			if (!visite[i]) {
-				System.out.println("---debut cfc---");
+				System.out.println("---debut composante---");
 				System.out.println(mesIndices.get(i));
-				System.out.println("---fin cfc---");
+				System.out.println("---fin composante---");
 			}
 		}
 
 	}
+	
+	
 
 }
