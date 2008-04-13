@@ -1,9 +1,12 @@
 package ecole.annee2.java.tp;
 
-
 public class GrapheMatrix implements Graphe {
+	private boolean isOriented = false;
+
 	private int nbSommet;
+
 	private int ident;
+
 	private int[][] matrix;
 
 	public GrapheMatrix() {
@@ -20,7 +23,16 @@ public class GrapheMatrix implements Graphe {
 		return nbSommet;
 	}
 
-	public void ajouterArc(int s1, int s2) {
+	public void ajouterArc(int s1, int s2, int cout) {
+		if (isOriented) {
+			ajouterArcOriented(s1, s2, cout);
+		} else {
+			ajouterArrete(s1, s2,cout);
+		}
+	}
+	
+
+	public void ajouterArcOriented(int s1, int s2,int cout) {
 		if (s1 < 0 || s2 < 0) {
 			System.out.println("Ces sommets n'appartiennent pas au graphe");
 			return;
@@ -30,10 +42,23 @@ public class GrapheMatrix implements Graphe {
 			System.out.println("Cet arc existe déjà");
 			return;
 		}
-		matrix[s1][s2] = 1;
+		matrix[s1][s2] = cout;
 	}
 
+	public void ajouterArrete(int s1, int s2,int cout) {
+		this.ajouterArcOriented(s1, s2, cout);
+		this.ajouterArcOriented(s2, s1,cout);
+	}
+
+
 	public void supprimerArc(int s1, int s2) {
+		if (isOriented) {
+			supprimerArcOriented(s1, s2);
+		} else {
+			supprimerArrete(s1, s2);
+		}
+	}
+	public void supprimerArcOriented(int s1, int s2) {
 		if (s1 < 0 || s2 < 0) {
 			System.out.println("Ces sommets n'appartiennent pas au graphe");
 			return;
@@ -43,6 +68,10 @@ public class GrapheMatrix implements Graphe {
 			return;
 		}
 		matrix[s1][s2] = 0;
+	}
+	public void supprimerArrete(int s1, int s2) {
+		this.supprimerArcOriented(s1, s2);
+		this.supprimerArcOriented(s2, s1);
 	}
 
 	public boolean estVide() {
@@ -159,5 +188,26 @@ public class GrapheMatrix implements Graphe {
 
 	public void setNbSommet(int nbSommet) {
 		this.nbSommet = nbSommet;
+	}
+
+	public boolean isOriented() {
+		return isOriented;
+	}
+
+	public void setOriented(boolean isOriented) {
+		this.isOriented = isOriented;
+	}
+
+	@Override
+	public String toString() {
+		String r = "GrapheMAtrix :";
+		int n = matrix.length;
+		for (int i = 0; i < n; i++) {
+			r+="\n";
+			for (int j = 0; j < n; j++) {
+				r+=matrix[i][j]+" ";
+			}
+		}r+="\n";
+		return r;
 	}
 }
