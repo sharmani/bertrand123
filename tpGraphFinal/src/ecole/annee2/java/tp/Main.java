@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	
+	public static boolean debug=false;
 	//private GrapheMatrix monGraph = new GrapheMatrix();
 
 	public Main() {
@@ -25,9 +25,9 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("Mon main");
-		File fGraph = new File("test3.txt");
+		File fGraph = new File("test.txt");
 		GrapheMatrix gm = new GrapheMatrix(fGraph);
-		gm.getPCC_dijkstra("A");
+		gm.getPCC_dijkstra("B","E");
 
 	}
 

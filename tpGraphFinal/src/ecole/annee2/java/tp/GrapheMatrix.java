@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import ecole.annee2.java.tp.ui.GrapheGUI;
+
 public class GrapheMatrix implements Graphe {
 	private boolean isOriented = false;
 
@@ -21,13 +23,17 @@ public class GrapheMatrix implements Graphe {
 
 	private HashMap<Integer, String> mesIndices = new HashMap<Integer, String>();
 
-	
-	
+	private ILogger logger;
 	public  GrapheMatrix(File fGraph) {
+		this(fGraph,null);
+	}
+	
+	
+	public  GrapheMatrix(File fGraph,ILogger logger) {
 		try {
 			// création du graph
 			// selection et lecture du fichier
-			
+			this.logger=logger;
 			System.out.println("fGraph :: " + fGraph.getAbsolutePath() + "  exists: " + fGraph.exists());
 			FileReader fReader = new FileReader(fGraph);
 			BufferedReader bReader = new BufferedReader(fReader);
@@ -118,12 +124,12 @@ public class GrapheMatrix implements Graphe {
 
 	public void ajouterArcOriented(int s1, int s2, int cout) {
 		if (s1 < 0 || s2 < 0) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return;
 		}
 
 		if (estArc(s1, s2) == true) {
-			System.out.println("[orienté]Cet arc existe déjà  s1:" + s1 + "  s2:" + s2);
+			log("[orienté]Cet arc existe déjà  s1:" + s1 + "  s2:" + s2);
 			return;
 		}
 		matrix[s1][s2] = cout;
@@ -144,11 +150,11 @@ public class GrapheMatrix implements Graphe {
 
 	public void supprimerArcOriented(int s1, int s2) {
 		if (s1 < 0 || s2 < 0) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return;
 		}
 		if (estArc(s1, s2) == false) {
-			System.out.println("L'arc n'appartient pas au graphe");
+			log("L'arc n'appartient pas au graphe");
 			return;
 		}
 		matrix[s1][s2] = 0;
@@ -193,22 +199,22 @@ public class GrapheMatrix implements Graphe {
 				}
 			}
 			if (cfc) {
-				System.out.println("---debut composante---");
+				log("---debut composante---");
 			}
 			while (!pile.isEmpty()) {
-				System.out.println(mesIndices.get(pile.removeFirst()));
+				log(mesIndices.get(pile.removeFirst()));
 			}
 			if (cfc) {
-				System.out.println("---fin composante---");
+				log("---fin composante---");
 			}
 			cfc = false;
 		}
 
 		for (int i = 0; i < n; i++) {
 			if (!visite[i]) {
-				System.out.println("---debut composante---");
-				System.out.println(mesIndices.get(i));
-				System.out.println("---fin composante---");
+				log("---debut composante---");
+				log(mesIndices.get(i));
+				log("---fin composante---");
 			}
 		}
 
@@ -227,7 +233,7 @@ public class GrapheMatrix implements Graphe {
 
 	public boolean estArc(int s1, int s2) {
 		if (s1 < 0 || s1 > nbSommet || s2 < 0 || s2 > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return false;
 		}
 
@@ -237,7 +243,7 @@ public class GrapheMatrix implements Graphe {
 	public int degrePlus(int s) {
 		int cpt = 0;
 		if (s < 0 || s > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return 1;
 		}
 		for (int i = 0; i < nbSommet; i = i + 1) {
@@ -250,7 +256,7 @@ public class GrapheMatrix implements Graphe {
 	public int degreMoins(int s) {
 		int cpt = 0;
 		if (s < 0 || s > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return 1;
 		}
 		for (int i = 0; i < nbSommet; i = i + 1) {
@@ -261,10 +267,9 @@ public class GrapheMatrix implements Graphe {
 	}
 
 	public int iemeSuccesseur(int s, int num) {
-		// System.out.println("toto");
 		int i, cpt = 0;
 		if (s < 0 || s > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return 1;
 		}
 
@@ -280,7 +285,7 @@ public class GrapheMatrix implements Graphe {
 	public int iemePredecesseur(int s, int num) {
 		int i, cpt = 0;
 		if (s < 0 || s > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return 1;
 		}
 		for (i = 0; i < nbSommet; i++) {
@@ -299,7 +304,7 @@ public class GrapheMatrix implements Graphe {
 	public int successeurSuivant(int s1, int s2) {
 		int i;
 		if (s1 < 0 || s1 > nbSommet || s2 < 0 || s2 > nbSommet) {
-			System.out.println("Ces sommets n'appartiennent pas au graphe");
+			log("Ces sommets n'appartiennent pas au graphe");
 			return 1;
 		}
 		for (i = s2 + 1; i < nbSommet; i++) {
@@ -375,12 +380,13 @@ public class GrapheMatrix implements Graphe {
 		return sMin;
 	}
 
-	public void getPCC_dijkstra(String debut) {
+	public void getPCC_dijkstra(String debut,String fin) {
         int iDebut = this.getKeyByValue( debut);
-        this.getPCC_dijkstra(iDebut);
+        int iFin = this.getKeyByValue( fin);
+        this.getPCC_dijkstra(iDebut,iFin);
 	}
 
-	public void getPCC_dijkstra(int debut) {
+	public void getPCC_dijkstra(int debut,int fin) {
 		this.sommetTab[debut].setDistanceASource(0);
 		int iteration = 0;
 		Vector<Sommet> vToVisit = getVectorTousLesSommets();
@@ -388,12 +394,20 @@ public class GrapheMatrix implements Graphe {
 		while (!vToVisit.isEmpty()) {
 			Sommet sMin = extraireMinDeF(vToVisit);
 			vToVisit.remove(sMin);
-			System.out.println("iteration " + iteration + " vVisited.size() " + vVisited.size() + " sMin " + sMin);
+			if (Main.debug){
+				System.out.println("");
+				System.out.println("iteration "+iteration+"PCC de "+mesIndices.get(debut)+ " à " + sMin);
+			}
+			if(fin==sMin.getI()){
+
+				log("");
+				log("PCC de "+mesIndices.get(debut)+ " à " + sMin);
+				return;
+			}
 			vVisited.add(sMin);
 			for (int i = 0; i < nbSommet; i++) {
 				for (int j = 0; j < nbSommet; j++) {
 					int poid_i_j = matrix[i][j];
-					//System.out.println("toto poid_i_j "+poid_i_j);
 					if (poid_i_j != 0) {
 						Sommet s_u = sommetTab[i];
 						Sommet s_v = sommetTab[j];
@@ -425,5 +439,19 @@ public class GrapheMatrix implements Graphe {
 
 	public HashMap<Integer, String> getMesIndices() {
 		return mesIndices;
+	}
+	
+	private void log(String s){
+		if (this.logger== null){
+			
+		}else {
+			logger.log(s);
+		}
+		System.out.println(s);
+	}
+
+
+	public void setLogger(ILogger logger) {
+		this.logger=logger;
 	}
 }
