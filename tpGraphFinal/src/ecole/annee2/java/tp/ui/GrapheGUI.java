@@ -13,11 +13,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -75,10 +77,10 @@ public class GrapheGUI implements ILogger{
 				processFile();
 			}
 		});
-		JMenuItem menuItemStart = new JMenuItem("start");
+		JMenuItem menuItemStart = new JMenuItem("about");
 		menuItemStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				start();
+				about();
 			}
 		});
 		menuBar.add(menuItemFile);
@@ -122,6 +124,13 @@ public class GrapheGUI implements ILogger{
 		frame.add(panelGlobal);
 		frame.pack();
 		frame.setVisible(true);
+	}
+
+	protected void about() {
+		JOptionPane.showMessageDialog(frame, "Dream Team\nMoldoch Stephane\nGuiral Antoine");
+
+
+		
 	}
 
 	protected void launchDijkstra() {
