@@ -48,6 +48,10 @@ public class Company {
 	private String dateModification = "";
 
 	private String comment = "";
+	
+	private String contacts="";
+	
+	private String classification="";
 
 	private final static String tag_name = "name";
 
@@ -75,6 +79,8 @@ public class Company {
 
 	private final static String tag_date_modification = "dateModification";
 	private final static String tag_id = "id";
+	private final static String tag_contacts = "contacts";
+	private final static String tag_classification = "classification";
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
@@ -115,6 +121,10 @@ public class Company {
 				this.ville = value;
 			} else if (tagName.equals(tag_codePostal)) {
 				this.codePostal = value;
+			} else if (tagName.equals(tag_contacts)) {
+				this.contacts = value;
+			}  else if (tagName.equals(tag_classification)) {
+				this.classification = value;
 			} else if (tagName.equals(tag_id)) {
 				try {
 					this.id=Long.parseLong(value);
@@ -215,6 +225,8 @@ public class Company {
 		s += this.putInTag(tag_date_modification, this.dateModification);
 		s += this.putInTag(tag_comment, this.comment);
 		s += this.putInTag(tag_id, ""+this.id);
+		s += this.putInTag(tag_contacts, ""+this.contacts);
+		s += this.putInTag(tag_classification, ""+this.classification);
 		s += "\n </company>";
 		return s;
 	}
@@ -233,7 +245,7 @@ public class Company {
 	}
 
 	public String toString() {
-		return "Company: " + this.name + " " + this.telephone + " " + this.fax + " " + this.eMail + " " + this.effectif + "  " + this.naf + "  " + this.siret + "  " + this.site + "  " + this.adresse + "  " + this.dateModification;
+		return "Company: " + this.name + " " + this.telephone + " " + this.fax + " " + this.eMail + " " + this.effectif + "  " + this.naf + "  " + this.siret + "  " + this.site + "  " + this.adresse+"  " +this.contacts+"  "+this.classification+ "  " + this.dateModification;
 	}
 
 	public String toStringDetail() {
@@ -247,6 +259,8 @@ public class Company {
 		s += "\n  siret : " + this.siret;
 		s += "\n  sitet : " + this.site;
 		s += "\n  adress : " + this.adresse;
+		s += "\n  contacts : " + this.contacts;
+		s += "\n  classification : " + this.classification;
 		s += "\n  coment : " + this.comment;
 		return s;
 	}
@@ -342,6 +356,22 @@ public class Company {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
+
+	public String getClassification() {
+		return classification;
+	}
+
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 
 }
