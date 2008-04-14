@@ -23,6 +23,7 @@ public class ToolAnuaireGui {
 	final static String CHOICE_PANEL_DETAIL = "detail";
 
 	final static String CHOICE_PANEL_PRO = "Pro";
+	final static String CHOICE_PANEL_SICOVAL = "Sicoval";
 
 	final static String CHOICE_LIST_COMPANIES = "list";
 
@@ -33,6 +34,7 @@ public class ToolAnuaireGui {
 	private PanelSaisie panelSaisie = new PanelSaisie();
 
 	private PanelSaisieAnnuairePro panelSaisieAnnuairePro = new PanelSaisieAnnuairePro();
+	private PanelSaisieAnnuaireSicoval panelSaisieSicoval = new PanelSaisieAnnuaireSicoval();
 
 	private PanelListCompany panelListCompanies = new PanelListCompany();
 	
@@ -73,6 +75,7 @@ public class ToolAnuaireGui {
 		panelGlobal.add(panelLogin, CHOICE_LOGIN);
 		panelGlobal.add(panelSaisie, CHOICE_PANEL_DETAIL);
 		panelGlobal.add(panelSaisieAnnuairePro, CHOICE_PANEL_PRO);
+		panelGlobal.add(panelSaisieSicoval, CHOICE_PANEL_SICOVAL);
 		panelGlobal.add(panelListCompanies, CHOICE_LIST_COMPANIES);
 		JMenuBar menuBar = new JMenuBar();
 		JMenuItem menuItemToHtml = new JMenuItem("to Html");
@@ -81,6 +84,13 @@ public class ToolAnuaireGui {
 				toHtml();
 			}
 		});
+		JMenuItem menuSaisieAnnuaireSicoval = new JMenuItem("saisie Sicoval");
+		menuSaisieAnnuaireSicoval.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displaySaisieAnnuaireSicoval();
+			}
+		});
+		
 		JMenuItem menuSaisieAnnuairePro = new JMenuItem("saisie Pro");
 		menuSaisieAnnuairePro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,6 +132,7 @@ public class ToolAnuaireGui {
 		});
 		menuBar.add(menuSaisieDetail);
 		menuBar.add(menuSaisieAnnuairePro);
+		menuBar.add(menuSaisieAnnuaireSicoval);
 		menuBar.add(menuItemToHtml);
 		menuBar.add(menuList);
 		menuBar.add(menuCleanBdd);
@@ -156,6 +167,15 @@ public class ToolAnuaireGui {
 		cl.show(panelGlobal, CHOICE_PANEL_PRO);
 		this.panelGlobal.repaint();
 	}
+	
+	private void displaySaisieAnnuaireSicoval() {
+		System.out.println("displaySicoval");
+		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
+		this.panelSaisieSicoval.clean();
+		cl.show(panelGlobal, CHOICE_PANEL_SICOVAL);
+		this.panelGlobal.repaint();
+	}
+
 
 	public static ToolAnuaireGui getInstance() {
 		return instance;
@@ -200,7 +220,14 @@ public class ToolAnuaireGui {
 	}
 
 	private void updateFromBdd() {
-		CompanyFactory.getInstance().updateListCompanyFromBdd();
+		try {
+			this.log("Connecting bdd");
+			CompanyFactory.getInstance().updateListCompanyFromBdd();
+			this.log("Connecting bdd done "+CompanyFactory.getInstance().getListCompanies().size());			
+		} catch (Throwable e) {
+			this.log("Exception "+e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }
