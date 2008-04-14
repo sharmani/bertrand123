@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.bg.annuaire.tool.company.Company;
+import com.bg.util2.StringTokenizerBg;
 
 public class PanelSaisieAnnuaireSicoval extends JPanel {
 
@@ -81,16 +82,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		String codePostal = getCodePostal(addresse);
 		String ville = getVille(addresse);
 		String classification = getSecondToken(classificationS);
-		System.out.println("name:" + name);
-		System.out.println("addresse:" + addresse);
-		System.out.println("ville:" + ville);
-		System.out.println("codePostal:" + codePostal);
-		System.out.println("telephoneLine:" + telephoneLine);
-		System.out.println("telephone:" + telephone);
-		System.out.println("contact:" + contact);
-		System.out.println("mail:" + mail);
-		System.out.println("site:" + site);
-		System.out.println("classification:" + classification);
+		saveOneCompany_2(name, addresse, telephone, mail, contact, classification, codePostal, ville, site);
 	}
 
 	private String getCodePostal(String adresse) {
@@ -128,11 +120,13 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		return "";
 	}
 
+	// Tél : 05 61 55 58 04 - contact@urosphere.com - www.urosphere.com
+
 	private String getMailFromLine(String s) {
 		if (s == null) {
 			return "";
 		}
-		StringTokenizer st = new StringTokenizer(s, "-:");
+		StringTokenizerBg st = new StringTokenizerBg(s, " - ");
 		while (st.hasMoreTokens()) {
 			String t = st.nextToken();
 			t = t.trim();
@@ -179,7 +173,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		if (s == null) {
 			return "";
 		}
-		StringTokenizer st = new StringTokenizer(s, "-:");
+		StringTokenizerBg st = new StringTokenizerBg(s, " - ");
 		while (st.hasMoreTokens()) {
 			String t = st.nextToken();
 			t = t.trim();
@@ -218,7 +212,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 
 	}
 
-	private void saveOneCompany_2(String name, String addresse, String telephone, String mail, String contact, String classification) {
+	private void saveOneCompany_2(String name, String addresse, String telephone, String mail, String contacts, String classification, String codePostal, String ville, String site) {
 		System.out.println("save Sicoval");
 
 		Company c = new Company();
@@ -230,8 +224,14 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		c.setEMail(mail);
 		c.setNaf("");
 		c.setEffectif("");
-		System.out.println(" -- " + c.toStringDetail());
-		ToolAnuaireGui.getInstance().displayDetailForValidation(c);
+		c.setCodePostal(codePostal);
+		c.setVille(ville);
+		c.setSite(site);
+		c.setName(name);
+		c.setContacts(contacts);
+		c.setClassification(classification);
+		System.out.println(" -----------------------------------------------\n " + c.toStringDetail());
+		// ToolAnuaireGui.getInstance().displayDetailForValidation(c);
 	}
 
 	public void clean() {
