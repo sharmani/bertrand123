@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -342,5 +343,49 @@ public class CompanyFactory {
 		}
 
 	}
+	
+	public Company getCompanySimilaireInsideBdd(Company c) {
+		String name = c.getName();
+		String siret = c.getSiret();
+		String telephone = c.getTelephone();
+		List<Company> cNAmes = CompanyFactory.getInstance().getCompaniesByName(name);
+		List<Company> cSirets = CompanyFactory.getInstance().getCompaniesBySiret(siret);
+		List<Company> cTelephones = CompanyFactory.getInstance().getCompaniesByTelephone(telephone);
+		boolean r = true;
+		if (cNAmes.size() > 0) {
+			for(Company cc: cNAmes){
+				String codePostal = cc.getCodePostal();
+				if (codePostal.equalsIgnoreCase(c.getCodePostal())){
+					return cc;
+				}
+			}
+		}
+		if (cSirets.size() > 0) {
+			if (siret.trim().length() > 0) {
+				return cSirets.get(0);
+			}
+		}
+		if (cTelephones.size() > 0) {
+			if (telephone.trim().length() > 0) {
+				return cTelephones.get(0);
+			}
+		}		
+		return null;
+	}
+
+	public boolean existSimilaireInsideBdd(Company c) {
+		Company cc = getCompanySimilaireInsideBdd( c) ;
+		return (cc!=null);
+	}
+
+	public void merge(Company c) {
+		Company cc = getCompanySimilaireInsideBdd( c) ;
+		if (cc== null){
+			return;
+		}
+		cc.merge(c);
+		cc.save();
+	}
+
 
 }

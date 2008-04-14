@@ -374,4 +374,38 @@ public class Company {
 		this.classification = classification;
 	}
 
+	public void merge(Company c) {
+		this.name=merge(name,c.name);
+		this.adresse=merge(adresse,c.adresse);
+		this.classification=merge(this.classification,c.classification);
+		this.codePostal=merge(this.codePostal,c.codePostal);
+		this.comment=merge(this.comment,c.comment);
+		this.effectif=merge(this.effectif,c.effectif);
+		this.eMail=merge(this.eMail,c.eMail);
+		this.fax=merge(this.fax,c.fax);
+		this.siret=merge(this.siret,c.siret);
+		this.site=merge(this.site,c.site);
+		this.contacts=merge(this.contacts,c.contacts);
+		this.telephone=merge(this.telephone,c.telephone);
+		this.ville=merge(this.ville,c.ville);
+		this.contacts=merge(this.contacts,c.contacts);
+	}
+	
+	private String merge(String s1, String s2){
+		if (s1== null){
+			return s2;
+		}
+		if (s2== null){
+			return s1;
+		}
+		if (s1.trim().length()==0){
+			return s2;
+		}
+		if (s2.trim().length()==0){
+			return s1;
+		}
+		return s2;
+
+	}
+
 }
