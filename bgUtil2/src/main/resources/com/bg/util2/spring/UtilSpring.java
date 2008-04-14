@@ -40,7 +40,7 @@ public class UtilSpring {
 		return initSpringConfigFromNameRoot(new File("/"), nameRoot);
 	}
 
-	public boolean initSpringConfigFromNameRoot(File dir, String nameRoot) {
+	private boolean initSpringConfigFromNameRoot(File dir, String nameRoot) {
 		try {
 			logger.info("initSpringConfigFromNameRoot " + dir.getAbsolutePath() + "  nameRoot : " + nameRoot);
 			String name = nameRoot + "_" + hostname() + ".xml";
@@ -65,7 +65,7 @@ public class UtilSpring {
 			logger.info("initSpringConfigFromNameRoot No Config File!!!  ");
 			return false;
 		} catch (Throwable e) {
-			logger.info("Exception " + UtilString.toStringHtml(e));
+			logger.info("Exception " + UtilString.toHtml(e));
 			return false;
 		}
 	}
@@ -89,7 +89,7 @@ public class UtilSpring {
 	public boolean initSpringConfig(File dir, String nameFileConfig) {
 		Resource ressource = this.getRessource(dir, nameFileConfig);
 		System.out.println("UtilSpring resource:" + ressource);
-		if (ressource== null){
+		if (ressource == null) {
 			return false;
 		}
 		return initSpringConfig(ressource);
@@ -130,7 +130,7 @@ public class UtilSpring {
 			logger.info("UtilSpring init done :" + beanFactory);
 			return true;
 		} catch (Throwable e) {
-			this.logger.info("exception "+e);
+			this.logger.info("exception " + e);
 			return false;
 		}
 	}
@@ -147,13 +147,14 @@ public class UtilSpring {
 	public void preInstantiateSingletons() {
 		try {
 			if (beanFactory == null) {
-				System.out.println("!UilSpring preInstantiateSingletons no beanFactory!");
+				logger.info("!UilSpring preInstantiateSingletons no beanFactory!");
 
 			} else {
-				System.out.println("preInstantiateSingletons xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " + beanFactory);
+				logger.info("preInstantiateSingletons xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " + beanFactory);
 				beanFactory.preInstantiateSingletons();
 			}
 		} catch (Exception e) {
+			logger.info("preInstantiateSingletons Exception " + e);
 			e.printStackTrace();
 		}
 	}
@@ -174,7 +175,7 @@ public class UtilSpring {
 		new ThreadInit(dir, nameRoot, preInstantiateSingletons);
 	}
 
-	class ThreadInit implements Runnable {
+	private class ThreadInit implements Runnable {
 		private File dir;
 
 		private String nameRoot;
@@ -186,6 +187,7 @@ public class UtilSpring {
 			nameRoot = nameRoot_;
 			preInstantiateSingletons = preInstantiateSingletons_;
 			Thread t = new Thread(this);
+			t.setDaemon(true);
 			t.start();
 		}
 
@@ -193,6 +195,8 @@ public class UtilSpring {
 			initSpringConfigFromNameRoot(dir, nameRoot);
 			if (preInstantiateSingletons) {
 				preInstantiateSingletons();
+			} else {
+				logger.info("!No PreInstanciation Singleton!");
 			}
 		}
 	}
