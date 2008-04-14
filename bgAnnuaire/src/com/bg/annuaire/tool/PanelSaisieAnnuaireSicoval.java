@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.bg.annuaire.tool.company.Company;
+import com.bg.annuaire.tool.company.CompanyFactory;
 import com.bg.util2.StringTokenizerBg;
 
 public class PanelSaisieAnnuaireSicoval extends JPanel {
@@ -232,6 +233,12 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		c.setClassification(classification);
 		System.out.println(" -----------------------------------------------\n " + c.toStringDetail());
 		// ToolAnuaireGui.getInstance().displayDetailForValidation(c);
+		if (CompanyFactory.getInstance().existSimilaireInsideBdd(c)){
+			CompanyFactory.getInstance().merge(c);
+			
+		}else {
+			CompanyFactory.getInstance().add(c);
+		}
 	}
 
 	public void clean() {
