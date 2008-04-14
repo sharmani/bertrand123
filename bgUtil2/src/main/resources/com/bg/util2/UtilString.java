@@ -139,7 +139,7 @@ public class UtilString {
         return b;
     }
 
-    public static String toString(List list) {
+    public static String toString(List<Object> list) {
         if (list == null) {
             return null;
         }
