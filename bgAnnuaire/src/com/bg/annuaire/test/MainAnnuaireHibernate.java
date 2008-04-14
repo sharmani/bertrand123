@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
@@ -18,6 +19,7 @@ public class MainAnnuaireHibernate {
 		UtilHibernateBg bgHibernateUtil;
 		BasicConfigurator.configure();//log4j
 		createTablesFromHibernateMapping("hibernate.cfg.xml");
+		Session session;
 			
 	}
 	
