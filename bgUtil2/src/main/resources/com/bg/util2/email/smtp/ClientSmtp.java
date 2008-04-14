@@ -57,7 +57,7 @@ public class ClientSmtp implements Runnable {
 
 	private String subjectActivationMessage = "Test activation";
 
-	private Logger logger = LoggerFactoryBg.getLogger("DEFAULT");
+	private Logger logger = LoggerFactoryBg.getLogger("MailSmtp");
 	
 	private static Hashtable hHostNameClientSmtp = new Hashtable();
 
@@ -66,10 +66,12 @@ public class ClientSmtp implements Runnable {
 	private Vector vThreads = new Vector();
 
 	private boolean isOn = true;
+	
+	
 
 	public ClientSmtp() {
 		super();
-		System.out.println("clientSmtp constructeur ooooooooooooooooooooooooooooooooooooooooooooooooooo");
+		logger.info("clientSmtp constructeur ooooooooooooooooooooooooooooooooooooooooooooooooooo");
 	}
 
 	/*
