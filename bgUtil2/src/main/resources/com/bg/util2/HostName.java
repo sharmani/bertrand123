@@ -54,6 +54,7 @@ public class HostName {
 	    System.out.println("InetAddress.getLocalHost:    "+ InetAddress.getLocalHost());
 	    String name = InetAddress.getLocalHost().getHostName();
 	    System.out.println(" ............. getAllIPs  "+getAllIPs());
+	    System.out.println(" ............. hosNAme  "+name);
 	}
 	
 	public static String getAllIPs()  {
