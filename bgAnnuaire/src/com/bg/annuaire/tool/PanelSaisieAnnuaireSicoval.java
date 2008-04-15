@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +23,8 @@ import com.bg.util2.StringTokenizerBg;
 public class PanelSaisieAnnuaireSicoval extends JPanel {
 
 	private JTextArea textArea = new JTextArea(10, 10);
-	private int iParse=0;
+
+	private int iParse = 0;
 
 	public PanelSaisieAnnuaireSicoval() {
 		super();
@@ -43,7 +45,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 
 	private void save() {
 		try {
-			this.iParse=0;
+			this.iParse = 0;
 			String text = this.textArea.getText();
 			Reader r = new StringReader(text);
 			BufferedReader br = new BufferedReader(r);
@@ -53,24 +55,37 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 			String classification = "";
 			String name = "";
 			String addresse = "";
-			boolean endDiv=false;
+			boolean endDiv = false;
+			String[] vLines = new String[5];
+			int k = 0;
 			while ((line = br.readLine()) != null) {
-				if (line.trim().length() == 0) {
+
+				if (line.trim().length() <= 0) {
+				} else if (line.trim().charAt(0) <= '0') {
 				} else if (line.trim().startsWith("Tél :")) {
 					telephone = line;
 				} else if (line.trim().startsWith("Contacts")) {
 					contact = line;
-					endDiv=true;
+					endDiv = true;
 				} else if (line.trim().startsWith("Classification ")) {
 					classification = line;
 				} else if (line.trim().startsWith("Classification ")) {
 					classification = line;
 				} else {
-					name = line;
-					addresse = br.readLine();					
+					
+					if (k < vLines.length) {
+						vLines[k] = line.trim();
+						k++;
+					}
 				}
-				if (endDiv){
-					endDiv=false;
+				
+				if (endDiv) {
+					endDiv = false;
+					k = 0;
+					name = vLines[0];
+					addresse = vLines[1];
+					vLines[0]="";
+					vLines[1]="";
 					saveOneCompany_1(name, addresse, telephone, contact, classification);
 				}
 
@@ -93,8 +108,6 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		String classification = getSecondToken(classificationS);
 		saveOneCompany_2(name, addresse, telephone, mail, contact, classification, codePostal, ville, site);
 	}
-
-	
 
 	private String getCodePostal(String adresse) {
 		if (adresse == null) {
@@ -203,15 +216,16 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		}
 		return "";
 	}
+
 	private String getFirstToken(String s) {
 		if (s == null) {
 			return "";
 		}
 		s = s.trim();
-		if (s.length()==0){
+		if (s.length() == 0) {
 			return "";
 		}
-		StringTokenizerBg st = new StringTokenizerBg(s," - ");
+		StringTokenizerBg st = new StringTokenizerBg(s, " - ");
 		return st.nextToken();
 	}
 
@@ -254,14 +268,14 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		c.setClassification(classification);
 		System.out.println(" -----------------------------------------------\n " + c.toStringDetail());
 		// ToolAnuaireGui.getInstance().displayDetailForValidation(c);
-		if (CompanyFactory.getInstance().existSimilaireInsideBdd(c)){
+		if (CompanyFactory.getInstance().existSimilaireInsideBdd(c)) {
 			CompanyFactory.getInstance().merge(c);
-			
-		}else {
+
+		} else {
 			CompanyFactory.getInstance().add(c);
 		}
 		iParse++;
-		ToolAnuaireGui.getInstance().log(iParse+" parse sicoval: "+c.getName());
+		ToolAnuaireGui.getInstance().log(iParse + " parse sicoval: " + c.getName());
 	}
 
 	public void clean() {

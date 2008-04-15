@@ -365,7 +365,7 @@ public class CompanyFactory {
 		String telephone = c.getTelephone();
 		List<Company> cNAmes = CompanyFactory.getInstance().getCompaniesByName(name);
 		List<Company> cSirets = CompanyFactory.getInstance().getCompaniesBySiret(siret);
-		List<Company> cTelephones = CompanyFactory.getInstance().getCompaniesByTelephone(telephone);
+		//List<Company> cTelephones = CompanyFactory.getInstance().getCompaniesByTelephone(telephone);
 		boolean r = true;
 		if (cNAmes.size() > 0) {
 			for(Company cc: cNAmes){
@@ -380,11 +380,7 @@ public class CompanyFactory {
 				return cSirets.get(0);
 			}
 		}
-		if (cTelephones.size() > 0) {
-			if (telephone.trim().length() > 0) {
-				return cTelephones.get(0);
-			}
-		}		
+			
 		return null;
 	}
 
