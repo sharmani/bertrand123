@@ -62,7 +62,7 @@ public class PanelListCompany extends JPanel {
 		this.listCompany = CompanyFactory.getInstance().getList();
 
 		Iterator<Company> ite = listCompany.iterator();
-		Object[][] oo = new Object[listCompany.size()][7];
+		Object[][] oo = new Object[listCompany.size()][8];
 		int i = 0;
 		while (ite.hasNext()) {
 			Company c = ite.next();
@@ -71,13 +71,14 @@ public class PanelListCompany extends JPanel {
 			p.add(new JLabel(c.getName()));
 			p.add(new JLabel(c.getSiret()));
 
-			oo[i][0] = c.getName();
-			oo[i][1] = c.getSiret();
-			oo[i][2] = c.getNaf();
-			oo[i][3] = c.getTelephone();
-			oo[i][4] = c.getCodePostal();
-			oo[i][5] = c.getVille();
-			oo[i][6] = c.getEffectif();
+			oo[i][0] = i;
+			oo[i][1] = c.getName();
+			oo[i][2] = c.getSiret();
+			oo[i][3] = c.getNaf();
+			oo[i][4] = c.getTelephone();
+			oo[i][5] = c.getCodePostal();
+			oo[i][6] = c.getVille();
+			oo[i][7] = c.getEffectif();
 			i++;
 
 		}
@@ -98,16 +99,22 @@ public class PanelListCompany extends JPanel {
 
 	private void deleteCompany() {
 		System.out.println("DeleteCompany");
-		int numeroRowSelected = this.table.getSelectedRow();
-		int ii = table.convertRowIndexToModel(numeroRowSelected);
-		Company c = this.listCompany.get(ii);
-		int r = JOptionPane.showConfirmDialog(this, "Confirm delete " + c.getName() + " ?");
+		int[] numeroRowSelected = this.table.getSelectedRows();
+		Company[] cc = new Company[numeroRowSelected.length];
+		String names="";
+		for (int k = 0; k < numeroRowSelected.length; k++) {
+			int ii = table.convertRowIndexToModel(numeroRowSelected[k]);
+			Company c = this.listCompany.get(ii);
+			cc[k] = c;
+			names+=""+c.getName()+", ";
+		}
+		int r = JOptionPane.showConfirmDialog(this, "Confirm delete " +numeroRowSelected.length+" companies \n"+ names + " ?");
 		if (r == JOptionPane.YES_OPTION) {
-			CompanyFactory.getInstance().delete(c);
+			CompanyFactory.getInstance().delete(cc);
 			this.initPanelGlobal();
 			this.updateUI();
 		}
-		System.out.println("deleteCompany   ii:" + ii + "   c:: " + c.getName());
+		
 	}
 
 	private void editCompany() {
@@ -119,9 +126,9 @@ public class PanelListCompany extends JPanel {
 		System.out.println("editCompany " + i + " :: " + ii + "   :: " + c.getName());
 		ToolAnuaireGui.getInstance().editCompany(c);
 	}
-	
+
 	public void updateList() {
-		this.initPanelGlobal();		
+		this.initPanelGlobal();
 	}
 
 	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -132,7 +139,7 @@ public class PanelListCompany extends JPanel {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] columnNames = { "Name", "Siret", "naf", "telephone" ,"codePostal","Ville","effectifs"};
+		private String[] columnNames = { "id","Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" };
 
 		private Object[][] data;
 
@@ -183,7 +190,5 @@ public class PanelListCompany extends JPanel {
 		}
 
 	}
-
-	
 
 }

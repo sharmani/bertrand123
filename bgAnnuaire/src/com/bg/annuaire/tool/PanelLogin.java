@@ -58,7 +58,7 @@ public class PanelLogin extends JPanel {
 			UtilHibernateBg.getInstance().initHibernate(this.textFieldUser.getText(),this.textFieldPAssword.getText());
 			CompanyFactory.getInstance().updateListCompanyFromBdd();
 			ToolAnuaireGui.getInstance().listCompanies();
-			ToolAnuaireGui.getInstance().log("connecting bdd done");
+			ToolAnuaireGui.getInstance().log("connecting bdd done size :"+CompanyFactory.getInstance().getList().size());
 		} catch (Throwable e) {
 			ToolAnuaireGui.getInstance().log("connecting bdd Exception "+e.getMessage());
 			e.printStackTrace();

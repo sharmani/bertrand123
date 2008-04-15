@@ -78,6 +78,19 @@ public class ToolAnuaireGui {
 		panelGlobal.add(panelSaisieSicoval, CHOICE_PANEL_SICOVAL);
 		panelGlobal.add(panelListCompanies, CHOICE_LIST_COMPANIES);
 		JMenuBar menuBar = new JMenuBar();
+		JMenuItem menuItemToExcel = new JMenuItem("to Excel");
+		menuItemToExcel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				toExcel();
+			}
+		});
+		JMenuItem menuItemConnectBdd = new JMenuItem("connect Bdd");
+		menuItemConnectBdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				connectBdd(); 
+			}
+		});
+
 		JMenuItem menuItemToHtml = new JMenuItem("to Html");
 		menuItemToHtml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -134,10 +147,12 @@ public class ToolAnuaireGui {
 		menuBar.add(menuSaisieAnnuairePro);
 		menuBar.add(menuSaisieAnnuaireSicoval);
 		menuBar.add(menuItemToHtml);
+		menuBar.add(menuItemToExcel);
 		menuBar.add(menuList);
 		menuBar.add(menuCleanBdd);
 		menuBar.add(menuCommit);
 		menuBar.add(menuUpdateFromBdd);
+		menuBar.add(menuItemConnectBdd);
 		frame.setJMenuBar(menuBar);
 		JPanel panelGlobal2 = new JPanel(new BorderLayout());
 		panelGlobal2.add(panelGlobal, BorderLayout.CENTER);
@@ -148,9 +163,19 @@ public class ToolAnuaireGui {
 		frame.setVisible(true);
 	}
 
+	protected void connectBdd() {
+		System.out.println("connectBdd");
+		this.displayLogin();
+	}
+
 	private void toHtml() {
 		CompanyFactory.getInstance().toHtml();
 		this.log(" Generate html done");
+
+	}
+	private void toExcel() {
+		CompanyFactory.getInstance().toExcel();
+		this.log(" Generate exceldone");
 
 	}
 
@@ -159,6 +184,13 @@ public class ToolAnuaireGui {
 		cl.show(panelGlobal, CHOICE_PANEL_DETAIL);
 		this.panelGlobal.repaint();
 	}
+	
+	private void displayLogin() {
+		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
+		cl.show(panelGlobal, CHOICE_LOGIN);
+		this.panelGlobal.repaint();
+	}
+
 
 	private void displaySaisieAnnuairePro() {
 		System.out.println("displaySaisieAnnuairePro");

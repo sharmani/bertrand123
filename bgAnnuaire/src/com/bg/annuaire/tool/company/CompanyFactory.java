@@ -165,6 +165,22 @@ public class CompanyFactory {
 		}
 
 	}
+	
+	public void toExcel() {
+		try {
+			File f = new File(this.fileName + ".CSV");
+			FileWriter fw = new FileWriter(f);			
+			for (Company c : this.list) {
+				fw.write(c.toStringExcel()+"\n");
+			}		
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
 
 	private String getLinkSite(Company c) {
 		String site = c.getSite();
@@ -288,7 +304,6 @@ public class CompanyFactory {
 		if (this.list.contains(c)) {
 			this.list.remove(c);
 		}
-		this.save();
 	}
 
 	public void commit() {
@@ -385,6 +400,14 @@ public class CompanyFactory {
 		}
 		cc.merge(c);
 		cc.save();
+	}
+
+	public void delete(Company[] cc) {
+		for(int i=0;i<cc.length;i++){
+			Company c =cc[i];
+			this.delete(c);
+		}
+		this.save();
 	}
 
 

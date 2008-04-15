@@ -205,6 +205,7 @@ public class PanelSaisie extends JPanel {
 			if (i == JOptionPane.YES_OPTION) {
 				CompanyFactory.getInstance().delete(this.companyCurrent);
 			}
+			CompanyFactory.getInstance().save();
 		}
 		this.initTextField();
 	}

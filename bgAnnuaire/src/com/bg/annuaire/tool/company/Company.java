@@ -237,6 +237,9 @@ public class Company {
 	}
 
 	public String getEffectif() {
+		if (this.effectif== null){
+			effectif="";
+		}
 		return effectif;
 	}
 
@@ -276,6 +279,9 @@ public class Company {
 	}
 
 	public String getComment() {
+		if (this.comment== null){
+			comment="";
+		}
 		return comment;
 	}
 
@@ -320,6 +326,9 @@ public class Company {
 	}
 
 	public String getVille() {
+		if (this.ville== null){
+			ville="";
+		}
 		return ville;
 	}
 
@@ -328,6 +337,9 @@ public class Company {
 	}
 
 	public String getCodePostal() {
+		if (this.codePostal== null){
+			codePostal="";
+		}
 		return codePostal;
 	}
 
@@ -336,7 +348,7 @@ public class Company {
 	}
 	@Transient
 	public String getVilleEncoded() {
-		return URLEncoder.encode(this.ville);
+		return URLEncoder.encode(this.getVille());
 	}
 	@Transient
 	public String getNameEncoded() {
@@ -359,6 +371,9 @@ public class Company {
 	}
 
 	public String getContacts() {
+		if (this.contacts== null){
+			contacts="";
+		}
 		return contacts;
 	}
 
@@ -367,6 +382,9 @@ public class Company {
 	}
 
 	public String getClassification() {
+		if (this.classification==null){
+			return "";
+		}
 		return classification;
 	}
 
@@ -406,6 +424,27 @@ public class Company {
 		}
 		return s2;
 
+	}
+
+	private final static String Excel_Separator=",";
+	public String toStringExcel() {
+		
+		String r=  this.getName().replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getAdresse().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getCodePostal().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getVille().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getClassification().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getComment().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getContacts().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getTelephone().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getEMail().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getFax().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getEffectif().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getNaf().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getSiret().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		r+=this.getSite().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
+		
+		return r;
 	}
 
 }
