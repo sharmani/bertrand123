@@ -1,82 +1,210 @@
 <project name="bgAnnuaire" default="makeUnsignedJar" basedir=".">
+
+     
     <description>Construction du jar </description>
  
-	<property name="build" location="build"/>
-	<property name="classes" location="classes_ANT"/>
-    <property name="src" location="src"/>
-  	
-   
+	<property name="build" location="build"  />
+	<property name="classes" location="classes_ANT"  />
+    <property name="src" location="src"  />
+	<property name="codebase" value="http://bertrand.guiral.free.fr/annuaire"  />
+			 
+	
+    <property name="l1" value="asm.jar"  />
+    <property name="l2" value="bgUtil2.jar"  />
+   <property name="l3" value="c3p0-0.9.1.jar"  />
+   <property name="l4" value="cglib-2.1.3.jar"  />
+   <property name="l5" value="checkstyle-all.jar"  />
+   <property name="l6" value="cleanimports.jar"  />
+   <property name="l7" value="commons-collections-2.1.1.jar"  />
+   <property name="l8" value="commons-logging-1.0.4.jar"  />
+   <property name="l9" value="concurrent-1.3.2.jar"  />
+   <property name="l10" value="connector.jar"  />
+   <property name="l11" value="dom4j-1.6.1.jar"  />
+   <property name="l12" value="ehcache-1.2.3.jar"  />
+   <property name="l13" value="ejb3-persistence.jar"  />
+   <property name="l14" value="hibernate3.jar"  />
+   <property name="l15" value="hibernate3-client.jar"  />
+   <property name="l16" value="hibernate-annotations.jar"  />
+   <property name="l17" value="hibernate-commons-annotations.jar"  />
+   <property name="l18" value="jaas.jar"  />
+   <property name="l19" value="jacc-1_0-fr.jar"  />
+   <property name="l20" value="javassist.jar"  />
+   <property name="l21" value="jaxen-1.1-beta-7.jar"  />
+   <property name="l22" value="jboss-cache.jar"  />
+   <property name="l23" value="jboss-common.jar"  />
+   <property name="l24" value="jboss-jmx.jar"  />
+   <property name="l25" value="jboss-system.jar"  />
+   <property name="l26" value="jdbc2_0-stdext.jar"  />
+   <property name="l27" value="jgroups-2.2.8.jar"  />
+   <property name="l28" value="jta.jar"  />
+   <property name="l29" value="log4j-1.2.11.jar"  />
+   <property name="l30" value="mysql-0.0.0.jar"  />
+   <property name="l31" value="oscache-2.1.jar"  />
+   <property name="l32" value="proxool-0.8.3.jar"  />
+   <property name="l33" value="swarmcache-1.0rc2.jar"  />
+   <property name="l34" value="syndiag2.jar"  />
+   <property name="l35" value="versioncheck.jar"  />
+   <property name="l36" value="xerces-2.6.2.jar"  />
+   <property name="l37" value="xml-apis.jar"  />
+ 
+	<property name="classpath" value="lib/asm.jar;lib/bgUtil2.jar;lib/hibernate3.jar;lib/hibernate-annotations.jar;lib/hibernate-commons-annotations.jar;lib/log4j-1.2.11.jar;lib/jta.jar;lib/ejb3-persistence.jar"  />
+		 
   <target name="clean"  description="clean up" >
-       <delete dir="${build}"/>
+       <delete dir="${build}"  />
   </target>
 	
   <target name="init" depends="clean">
-    <tstamp/>
+    <tstamp  />
   </target>
 
 	<target name="compileSource" depends="init" description="utilise Midp classes">
-		  <echo message="classes=${classes}" /> 
+		  <echo message="classes=${classes}"   /> 
 
-		  <delete dir="${classes}" /> 
-		  <mkdir dir="${classes}" /> 
-		  <echo message="javac src: ${src} to classes: ${classes}" /> 
-		  <javac destdir="${classes}" srcdir="${src}"  classpath="" target="1.5" source="1.5" optimize="on" debug="off" /> 
+		  <delete dir="${classes}"   /> 
+		  <mkdir dir="${classes}"   /> 
+		  <echo message="javac src: ${src} to classes: ${classes}"   /> 
+		  <javac destdir="${classes}" srcdir="${src}"  classpath="${classpath}" target="1.5" source="1.5" optimize="on" debug="off"   /> 
    </target>
 
   
 	
-	<target name="makeUnsignedJar" depends="compileSource">
-		 <delete dir="${build}" /> 
-		 <mkdir dir="${build}" /> 
-		 <jar destfile="${build}/bgAnnuaire_unsigned.jar" basedir="${classes}" />
-		 <signjar jar="${build}/bgAnnuaire_unsigned.jar" alias="bg" storepass="shubaka" signedjar="${build}/bgAnnuaire.jar"/>
-		 	<copy file="${build}/bgAnnuaire.jar" tofile="${build}/bgAnnuaire.zip"/>
-		 	<copy file="bgAnnuaire.jnlp" tofile="${build}/bgAnnuaire.jnlp"/>
-			<copy file="bgAnnuaire.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"/>
+	<target name="make bgAnnuaire SignedJar" depends="compileSource">
+		 <delete dir="${build}"   /> 
+		 <mkdir dir="${build}"   /> 
+		 <jar destfile="${build}/bgAnnuaire_unsigned.jar" basedir="${classes}"   />
+		 <signjar jar="${build}/bgAnnuaire_unsigned.jar" alias="bg" storepass="shubaka" signedjar="${build}/bgAnnuaire.jar"  />
 	</target>
+	
+	<target name="copyJnlp">
+		<copy file="${build}/bgAnnuaire.jar" tofile="${build}/bgAnnuaire.zip"  />
+		<copy file="bgAnnuaire.jnlp" tofile="${build}/bgAnnuaire.jnlp"  />
+		<copy file="bgAnnuaire.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"  />
+	</target>
+	
+	
+	
+	<target name="make bgHibernateFull signed">
+		  <delete dir="bgHibernateDir"   /> 
+		  <mkdir dir="bgHibernateDir"   /> 
+		 
+		  <unjar src="lib/${l1}" dest="bgHibernateDir" />
+		 <unjar src="lib/${l2}"  dest="bgHibernateDir"   />
+		 <unjar src="lib/${l3}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l4}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l5}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l6}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l7}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l8}"    dest="bgHibernateDir" />
+		 <unjar src="lib/${l9}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l10}"  dest="bgHibernateDir"   />
+		 <unjar src="lib/${l11}"  dest="bgHibernateDir"   />
+		 <unjar src="lib/${l12}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l13}"  dest="bgHibernateDir"   />
+		 <unjar src="lib/${l14}"  dest="bgHibernateDir"   />
+		 <unjar src="lib/${l15}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l16}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l17}"    dest="bgHibernateDir" />
+		 <unjar src="lib/${l18}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l19}"   dest="bgHibernateDir"  />
+		 
+		 <unjar src="lib/${l20}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l21}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l22}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l23}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l24}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l25}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l26}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l27}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l28}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l29}"  dest="bgHibernateDir"  />
+
+		 <unjar src="lib/${l30}"   dest="bgHibernateDir"  />
+		 <unjar src="lib/${l31}"  dest="bgHibernateDir"  />
+		 <unjar src="lib/${l32}"  dest="bgHibernateDir" />
+		 <unjar src="lib/${l33}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l34}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l35}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l36}"   dest="bgHibernateDir" />
+		 <unjar src="lib/${l37}"  dest="bgHibernateDir"  />
+		 <delete verbose="true">
+    		<fileset dir="bgHibernateDir/META-INF" >
+    			<exclude name="services"/>
+    			<include name="*"  />    			
+    		</fileset>
+  		</delete>
+  		 <delete verbose="true">
+    		<fileset dir="${build}" >
+    			<include name="bgHibernate*"  />    			
+    		</fileset>
+  		</delete>
+  		
+  		
+	    <jar destfile="bgHibernateFull_unsigned.jar" basedir="bgHibernateDir"   />
+	 	<signjar jar="bgHibernateFull_unsigned.jar" alias="bg" storepass="shubaka" signedjar="bgHibernateFull.jar"  />
+		
+	</target>
+	
+	<target name="makeJar">
+	    <jar destfile="${build}/bgAnnuaire_unsigned.jar" basedir="${classes}"   />
+	 	<signjar jar="${build}/bgAnnuaire_unsigned.jar" alias="bg" storepass="shubaka" signedjar="${build}/bgAnnuaire.jar"  />
+	</target>
+	
+	
 			
 	   <target name="deployLocal">
-	   		 <copy file="bgAnnuaire_localhost.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"/>
-			 <copy file="${build}/bgAnnuaire.jar" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jar"/>
+	   		 <copy file="bgAnnuaire_localhost.jnlp" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jnlp"  />
+			 <copy file="${build}/bgAnnuaire.jar" tofile="C:\apache-tomcat-5.5.20\webapps/bg/bgAnnuaire.jar"  />
 		</target>
+		
+		<target name="deploy_bertrand.guiral.free.fr_lib" >
+			<ftp server="ftpperso.free.fr"  userid="bertrand.guiral"  password="antoiben" remotedir="/" verbose="yes">
+	   	   	  <fileset dir=".">
+ 	      		<include name="bgHibernateFull.jar"  />
+	   	      </fileset>
+	   	    </ftp>
+		</target>
+		
 			 		
 	   <target name="deploy_bertrand.guiral.free.fr" >
-	        <delete file="${build}/bgAnnuaire.jnlp"/>
-	   		<copy file="bgAnnuaire.jnlp" tofile="${build}/bgAnnuaire.jnlp"/>
-		 	<copy file="annuaire.html" tofile="${build}/annuaire.html"/>
-		 	<copy file="bddCompanies.xml" tofile="${build}/bddCompanies.xml"/>
-		 	<copy file="bddCompanies.html" tofile="${build}/bddCompanies.html"/>
-		 	<ftp server="ftpperso.free.fr"  userid="bertrand.guiral"  password="antoiben"  >
+	        <delete file="${build}/bgAnnuaire.jnlp"  />
+	   		<copy file="annuaire.html" tofile="${build}/annuaire.html"  />
+	   		<copy file="bgAnnuaire.jnlp" tofile="${build}/annuaire.jnlp"  >
+	   			<filterset>
+    			<filter token="codebase" value="http://bertrand.guiral.free.fr"/>
+    			</filterset>
+	   		</copy>
+		 	
+		 	<copy file="bddCompanies.xml" tofile="${build}/bddCompanies.xml"  />
+		 	<copy file="bddCompanies.html" tofile="${build}/bddCompanies.html"  />
+	   		<!-- ftp action="mkdir" server="ftpperso.free.fr" userid="bertrand.guiral" password="antoiben" remotedir="annuaire" verbose="yes"/ -->
+
+		 	<ftp server="ftpperso.free.fr"  userid="bertrand.guiral"  password="antoiben" remotedir="/" verbose="yes">
 	   	   	  <fileset dir="${build}">
- 	      		<include name="bgAnnuaire.jnlp"/>
- 	      		<include name="bgAnnuaire.jar"/>
-	      		<include name="annuaire.html"/>
-	      		<include name="bddCompanies.html"/>
-	      		<include name="bddCompanies.xml"/>
+ 	      		<include name="*.jnlp"  />
+	   	   		<include name="bgAnnuaire.jar"  />
+	   	   		<include name="annuaire.html"  />	   	   		
 	   	      </fileset>
 	   	    </ftp>
 		</target>
 			 		
+		 	
+	  
 		 		
-	 <target name="makeJNLP">	 	
-		 <echo message="codeBase: ${codebase}"/>
-	 	 <loadfile property="jnlp"   srcFile="bgAnnuaire.jnlp"/>
-	 	 <property name="jnlp2" value="${jnlp}"/>
-	 	<echo message="jnlp2: ${jnlp2}"/>
-	 	<echo file="testJnlp.jnlp" >${jnlp}</echo>
-    </target>
-			
+	
+	<!-- C:\Program Files\Java\jdk1.5.0_09\bin>keytool.exe -delete -alias bg -storepass shubaka-->	
 	<target name="genKey" description="Genere les keys de signature des jars . Ne doit etre utilised qu'une fois">
-		<genkey alias="bg" storepass="shubaka" >
+		<echo message="N'utiliser qu'une fois!!!"   /> 		
+		<genkey alias="bg" storepass="shubaka" validity="3000">
 			 	  <dname>
-				 	    <param name="CN" value="bg"/>
-				 	    <param name="OU" value="bg"/>
-				 	    <param name="O"  value="bg"/>
-				 	    <param name="C"  value="FR"/>
+				 	    <param name="CN" value="bg"  />
+				 	    <param name="OU" value="bg"  />
+				 	    <param name="O"  value="bg"  />
+				 	    <param name="C"  value="FR"  />
 			 	  </dname>
 	    </genkey>
     </target>
-    
+	
+	
     
 
 </project>
