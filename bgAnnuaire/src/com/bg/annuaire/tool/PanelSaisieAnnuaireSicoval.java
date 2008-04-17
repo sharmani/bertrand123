@@ -117,7 +117,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		if (adresse == null) {
 			return "";
 		}
-		StringTokenizer st = new StringTokenizer(adresse, "-");
+		StringTokenizerBg st = new StringTokenizerBg(adresse, " - ");
 		String lastToken = "";
 		while (st.hasMoreTokens()) {
 			lastToken = st.nextToken();
@@ -133,7 +133,7 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 		if (adresse == null) {
 			return "";
 		}
-		StringTokenizer st = new StringTokenizer(adresse, "-");
+		StringTokenizerBg st = new StringTokenizerBg(adresse, " - ");
 		String lastToken = "";
 		while (st.hasMoreTokens()) {
 			lastToken = st.nextToken();

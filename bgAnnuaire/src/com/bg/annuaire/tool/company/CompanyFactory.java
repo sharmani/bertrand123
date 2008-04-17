@@ -166,16 +166,23 @@ public class CompanyFactory {
 
 	}
 	
-	public void toExcel() {
+	private File getFileExcel(){
+		File f = new File(this.fileName + ".CSV");		
+		return f;
+	}
+	
+	public File toExcel() {
 		try {
-			File f = new File(this.fileName + ".CSV");
+			File f = getFileExcel();
 			FileWriter fw = new FileWriter(f);			
 			for (Company c : this.list) {
 				fw.write(c.toStringExcel()+"\n");
 			}		
 			fw.close();
+			return f;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 	}

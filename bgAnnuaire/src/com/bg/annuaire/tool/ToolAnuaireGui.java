@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -174,9 +175,12 @@ public class ToolAnuaireGui {
 
 	}
 	private void toExcel() {
-		CompanyFactory.getInstance().toExcel();
-		this.log(" Generate exceldone");
-
+		File f= CompanyFactory.getInstance().toExcel();
+		String fStr ="?? no file ??";
+		if (f!= null){
+			fStr = f.getAbsolutePath();
+		}
+		this.log(" Generate exceldone "+fStr);
 	}
 
 	private void displaySaisieDetail() {
