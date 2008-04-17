@@ -61,7 +61,6 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 			while ((line = br.readLine()) != null) {
 
 				if (line.trim().length() <= 0) {
-				} else if (line.trim().charAt(0) <= '0') {
 				} else if (line.trim().startsWith("Tél :")) {
 					telephone = line;
 				} else if (line.trim().startsWith("Contacts")) {
@@ -97,6 +96,11 @@ public class PanelSaisieAnnuaireSicoval extends JPanel {
 
 	private void saveOneCompany_1(String nameS, String addresse, String telephoneS, String contactS, String classificationS) {
 		System.out.println("--------------------------------------------");
+		System.out.println("---------nameS :"+nameS);
+		System.out.println("---------addresse "+addresse);
+		System.out.println("---------telephoneS "+telephoneS);
+		System.out.println("---------contactS "+contactS);
+		System.out.println("---------classificationS "+classificationS);
 		String name = getFirstToken(nameS);
 		String telephoneLine = getSecondToken(telephoneS);
 		String contact = getSecondToken(contactS);
