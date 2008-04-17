@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,6 +31,8 @@ public class ToolAnuaireGui {
 
 	final static String CHOICE_LOGIN = "login";
 
+	
+	private File fCurrentDirectory = new File(".");
 	private static ToolAnuaireGui instance;
 
 	private PanelSaisie panelSaisie = new PanelSaisie();
@@ -138,12 +141,24 @@ public class ToolAnuaireGui {
 				commit();
 			}
 		});
+		JMenu menuFile = new JMenu("File");
+		
+		
+		JMenuItem menuSave = new JMenuItem("save");
+		menuSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
+		menuFile.add(menuSave) ;
+
 		JMenuItem menuUpdateFromBdd = new JMenuItem("update");
 		menuUpdateFromBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateFromBdd();
 			}
 		});
+		menuBar.add(menuFile);
 		menuBar.add(menuSaisieDetail);
 		menuBar.add(menuSaisieAnnuairePro);
 		menuBar.add(menuSaisieAnnuaireSicoval);
@@ -264,6 +279,21 @@ public class ToolAnuaireGui {
 			this.log("Exception "+e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	private void save() {
+		System.out.println("No Implemented yet");
+		JFileChooser fc= new JFileChooser(fCurrentDirectory);
+		s
+		int returnVal = fc.showOpenDialog(this.frame);
+		 if (returnVal == JFileChooser.APPROVE_OPTION) {
+	            File file = fc.getSelectedFile();
+	            //This is where a real application would open the file.
+	            log("Opening: " + file.getName() );
+	        } else {
+	            log("Open command cancelled by user.");
+	        }
+
 	}
 
 }
