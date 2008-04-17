@@ -165,6 +165,9 @@ public class Company {
 	}
 
 	public String getAdresse() {
+		if (adresse== null){
+			return "";
+		}
 		return adresse;
 	}
 
