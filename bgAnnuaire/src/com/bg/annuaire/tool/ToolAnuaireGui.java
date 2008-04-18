@@ -19,29 +19,33 @@ import javax.swing.JTextField;
 
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
+import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireExcel;
+import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireXML;
 
 public class ToolAnuaireGui {
 
 	final static String CHOICE_PANEL_DETAIL = "detail";
 
 	final static String CHOICE_PANEL_PRO = "Pro";
+
 	final static String CHOICE_PANEL_SICOVAL = "Sicoval";
 
 	final static String CHOICE_LIST_COMPANIES = "list";
 
 	final static String CHOICE_LOGIN = "login";
 
-	
 	private File fCurrentDirectory = new File(".");
+
 	private static ToolAnuaireGui instance;
 
 	private PanelSaisie panelSaisie = new PanelSaisie();
 
 	private PanelSaisieAnnuairePro panelSaisieAnnuairePro = new PanelSaisieAnnuairePro();
+
 	private PanelSaisieAnnuaireSicoval panelSaisieSicoval = new PanelSaisieAnnuaireSicoval();
 
 	private PanelListCompany panelListCompanies = new PanelListCompany();
-	
+
 	private PanelLogin panelLogin = new PanelLogin();
 
 	private JPanel panelGlobal = new JPanel(new CardLayout());
@@ -91,7 +95,7 @@ public class ToolAnuaireGui {
 		JMenuItem menuItemConnectBdd = new JMenuItem("connect Bdd");
 		menuItemConnectBdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				connectBdd(); 
+				connectBdd();
 			}
 		});
 
@@ -107,7 +111,7 @@ public class ToolAnuaireGui {
 				displaySaisieAnnuaireSicoval();
 			}
 		});
-		
+
 		JMenuItem menuSaisieAnnuairePro = new JMenuItem("saisie Pro");
 		menuSaisieAnnuairePro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,15 +146,14 @@ public class ToolAnuaireGui {
 			}
 		});
 		JMenu menuFile = new JMenu("File");
-		
-		
+
 		JMenuItem menuSave = new JMenuItem("save");
 		menuSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save();
 			}
 		});
-		menuFile.add(menuSave) ;
+		menuFile.add(menuSave);
 
 		JMenuItem menuUpdateFromBdd = new JMenuItem("update");
 		menuUpdateFromBdd.addActionListener(new ActionListener() {
@@ -189,13 +192,18 @@ public class ToolAnuaireGui {
 		this.log(" Generate html done");
 
 	}
-	private void toExcel() {
-		File f= CompanyFactory.getInstance().toExcel();
-		String fStr ="?? no file ??";
-		if (f!= null){
+	
+	private void toExcel(){
+		File f = CompanyFactory.getInstance().toExcel();
+		toExcel(f);
+	}
+
+	private void toExcel(File f) {
+		String fStr = "?? no file ??";
+		if (f != null) {
 			fStr = f.getAbsolutePath();
 		}
-		this.log(" Generate exceldone "+fStr);
+		this.log(" Generate exceldone " + fStr);
 	}
 
 	private void displaySaisieDetail() {
@@ -203,13 +211,12 @@ public class ToolAnuaireGui {
 		cl.show(panelGlobal, CHOICE_PANEL_DETAIL);
 		this.panelGlobal.repaint();
 	}
-	
+
 	private void displayLogin() {
 		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
 		cl.show(panelGlobal, CHOICE_LOGIN);
 		this.panelGlobal.repaint();
 	}
-
 
 	private void displaySaisieAnnuairePro() {
 		System.out.println("displaySaisieAnnuairePro");
@@ -218,7 +225,7 @@ public class ToolAnuaireGui {
 		cl.show(panelGlobal, CHOICE_PANEL_PRO);
 		this.panelGlobal.repaint();
 	}
-	
+
 	private void displaySaisieAnnuaireSicoval() {
 		System.out.println("displaySicoval");
 		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
@@ -226,7 +233,6 @@ public class ToolAnuaireGui {
 		cl.show(panelGlobal, CHOICE_PANEL_SICOVAL);
 		this.panelGlobal.repaint();
 	}
-
 
 	public static ToolAnuaireGui getInstance() {
 		return instance;
@@ -258,7 +264,7 @@ public class ToolAnuaireGui {
 	}
 
 	public void listCompanies() {
-		System.out.println("ListCompanies size:"+CompanyFactory.getInstance().getList().size());
+		System.out.println("ListCompanies size:" + CompanyFactory.getInstance().getList().size());
 		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
 		this.panelListCompanies.updateList();
 		cl.show(panelGlobal, CHOICE_LIST_COMPANIES);
@@ -274,32 +280,45 @@ public class ToolAnuaireGui {
 		try {
 			this.log("Connecting bdd");
 			CompanyFactory.getInstance().updateListCompanyFromBdd();
-			this.log("Connecting bdd done "+CompanyFactory.getInstance().getListCompanies().size());			
+			this.log("Connecting bdd done " + CompanyFactory.getInstance().getListCompanies().size());
 		} catch (Throwable e) {
-			this.log("Exception "+e.getMessage());
+			this.log("Exception " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void save() {
+		long time0 = System.currentTimeMillis();
 		System.out.println("save processing .");
-		JFileChooser fc= new JFileChooser(fCurrentDirectory);
+		JFileChooser fc = new JFileChooser(fCurrentDirectory);
+		long time1 = System.currentTimeMillis();
+		System.out.println("save processing .." + (time1 - time0) + " ms");
+
 		FileFilterAnnuaireXML filterXml = new FileFilterAnnuaireXML();
 		FileFilterAnnuaireExcel filterExcel = new FileFilterAnnuaireExcel();
-		   
-		System.out.println("save processing ..");
-		
+		String fileName = "bddAnuaire." + FileFilterAnnuaireExcel.TYPE_CSV_excel;
+		File fSelected = new File(fCurrentDirectory, fileName);
+		fc.setSelectedFile(fSelected);
+		long time2 = System.currentTimeMillis();
+		System.out.println("save processing ..." + (time2 - time1) + " ms");
+
 		fc.addChoosableFileFilter(filterXml);
 		fc.addChoosableFileFilter(filterExcel);
-		    System.out.println("save processing ...");
+		long time3 = System.currentTimeMillis();
+		System.out.println("save processing .... " + (time3 - time2) + " ms");
 		int returnVal = fc.showOpenDialog(this.frame);
-		 if (returnVal == JFileChooser.APPROVE_OPTION) {
-	            File file = fc.getSelectedFile();
-	            //This is where a real application would open the file.
-	            log("Opening: " + file.getName() );
-	        } else {
-	            log("Open command cancelled by user.");
-	        }
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			// This is where a real application would open the file.
+			log("Opening: " + file.getName());
+			if(filterExcel.accept(file)){
+				this.toExcel(file);
+			}else if (filterXml.accept(file)){
+				CompanyFactory.getInstance().saveAsXml(file);
+			}
+		} else {
+			log("Open command cancelled by user.");
+		}
 
 	}
 

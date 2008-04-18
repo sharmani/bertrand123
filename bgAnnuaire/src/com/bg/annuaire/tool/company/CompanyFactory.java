@@ -89,8 +89,8 @@ public class CompanyFactory {
 		this.list.add(company);
 	}
 
-	public synchronized void save() {
-		File f = new File(this.fileName + ".xml");
+	public synchronized void saveAsXml(File f) {
+		//File f = new File(this.fileName + ".xml");
 		if (f.exists()) {
 			File fileOld = new File(this.fileName + "1.xml");
 			f.renameTo(fileOld);
@@ -273,7 +273,7 @@ public class CompanyFactory {
 		cleanBdd_deleteEmpty();
 		cleanBdd_makeCodePostalAndVille();
 		cleanBdd_trim();
-		this.save();
+		this.saveAsXml();
 	}
 
 	public void cleanBdd_makeCodePostalAndVille() {
@@ -410,7 +410,7 @@ public class CompanyFactory {
 			Company c =cc[i];
 			this.delete(c);
 		}
-		this.save();
+		this.saveAsXml();
 	}
 
 

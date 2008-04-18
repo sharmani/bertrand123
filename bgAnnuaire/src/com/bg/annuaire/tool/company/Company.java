@@ -209,7 +209,7 @@ public class Company {
 
 	public void save() {
 		this.dateModification = simpleDateFormat.format(new Date());
-		CompanyFactory.getInstance().save();
+		CompanyFactory.getInstance().saveAsXml();
 	}
 
 	public String toStringXml() {
