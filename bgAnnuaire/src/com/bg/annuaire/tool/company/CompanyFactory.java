@@ -33,6 +33,8 @@ public class CompanyFactory {
 
 	private String fileName = "bddCompanies";
 
+	private File fileXml = new File("bddAnnuaire.xml");
+
 	private static CompanyFactory instance;
 
 	public CompanyFactory() {
@@ -89,8 +91,12 @@ public class CompanyFactory {
 		this.list.add(company);
 	}
 
+	public synchronized void saveAsXml() {
+	
+		this.saveAsXml(this.fileXml);
+	}
 	public synchronized void saveAsXml(File f) {
-		//File f = new File(this.fileName + ".xml");
+		this.fileXml = new File(this.fileName + ".xml"); 
 		if (f.exists()) {
 			File fileOld = new File(this.fileName + "1.xml");
 			f.renameTo(fileOld);
