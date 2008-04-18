@@ -35,6 +35,8 @@ public class CompanyFactory {
 
 	private File fileXml = new File("bddAnnuaire.xml");
 
+	private File fileHtml =  new File("bddCompanies" + ".html");;
+
 	private static CompanyFactory instance;
 
 	public CompanyFactory() {
@@ -92,11 +94,12 @@ public class CompanyFactory {
 	}
 
 	public synchronized void saveAsXml() {
-	
+
 		this.saveAsXml(this.fileXml);
 	}
+
 	public synchronized void saveAsXml(File f) {
-		this.fileXml = new File(this.fileName + ".xml"); 
+		this.fileXml = new File(this.fileName + ".xml");
 		if (f.exists()) {
 			File fileOld = new File(this.fileName + "1.xml");
 			f.renameTo(fileOld);
@@ -129,8 +132,13 @@ public class CompanyFactory {
 	}
 
 	public void toHtml() {
+		toHtml(this.fileHtml);
+	}
+
+	public void toHtml(File f) {
+		this.fileHtml = f;
 		try {
-			File f = new File(this.fileName + ".html");
+
 			FileWriter fw = new FileWriter(f);
 			fw.write("<html>");
 			fw.write("\n<head> ");
@@ -171,19 +179,19 @@ public class CompanyFactory {
 		}
 
 	}
-	
-	private File getFileExcel(){
-		File f = new File(this.fileName + ".CSV");		
+
+	private File getFileExcel() {
+		File f = new File(this.fileName + ".CSV");
 		return f;
 	}
-	
+
 	public File toExcel() {
 		try {
 			File f = getFileExcel();
-			FileWriter fw = new FileWriter(f);			
+			FileWriter fw = new FileWriter(f);
 			for (Company c : this.list) {
-				fw.write(c.toStringExcel()+"\n");
-			}		
+				fw.write(c.toStringExcel() + "\n");
+			}
 			fw.close();
 			return f;
 		} catch (IOException e) {
@@ -192,8 +200,6 @@ public class CompanyFactory {
 		}
 
 	}
-
-
 
 	private String getLinkSite(Company c) {
 		String site = c.getSite();
@@ -329,9 +335,9 @@ public class CompanyFactory {
 				if (c == null) {
 					logger.info("commit -------------------------- c is null!!!! ");
 				} else {
-					logger.info("commit ------------------ "+c.getName());
+					logger.info("commit ------------------ " + c.getName());
 					long id = c.getId();
-					logger.info("commit ------------------ "+id);
+					logger.info("commit ------------------ " + id);
 					if (id == 0L) {
 						c.setId((long) i);
 					}
@@ -341,7 +347,7 @@ public class CompanyFactory {
 				i++;
 			}
 		} catch (HibernateException e) {
-			logger.info("Exception "+e);
+			logger.info("Exception " + e);
 			e.printStackTrace();
 		}
 
@@ -350,15 +356,15 @@ public class CompanyFactory {
 	public void updateListCompanyFromBdd() {
 		this.list = getListCompanies();
 	}
-	
+
 	public List<Company> getListCompanies() {
 		try {
 			this.logger.info("UserFactory updateFromHibernate ==================== ");
 			Session session = UtilHibernateBg.getInstance().getSession();
-			this.logger.info("UserFactory updateFromHibernate  session : "+session);
-			
+			this.logger.info("UserFactory updateFromHibernate  session : " + session);
+
 			session.beginTransaction();
-			Query query = session.createQuery("from "+Company.class.getName());
+			Query query = session.createQuery("from " + Company.class.getName());
 			List<Company> listCompany = query.list();
 
 			session.getTransaction().commit();
@@ -366,24 +372,25 @@ public class CompanyFactory {
 			return listCompany;
 		} catch (Throwable e) {
 			e.printStackTrace();
-			this.logger.info("UserFactory  updateFromHibernate"+ e);
+			this.logger.info("UserFactory  updateFromHibernate" + e);
 			return null;
 		}
 
 	}
-	
+
 	public Company getCompanySimilaireInsideBdd(Company c) {
 		String name = c.getName();
 		String siret = c.getSiret();
 		String telephone = c.getTelephone();
 		List<Company> cNAmes = CompanyFactory.getInstance().getCompaniesByName(name);
 		List<Company> cSirets = CompanyFactory.getInstance().getCompaniesBySiret(siret);
-		//List<Company> cTelephones = CompanyFactory.getInstance().getCompaniesByTelephone(telephone);
+		// List<Company> cTelephones =
+		// CompanyFactory.getInstance().getCompaniesByTelephone(telephone);
 		boolean r = true;
 		if (cNAmes.size() > 0) {
-			for(Company cc: cNAmes){
+			for (Company cc : cNAmes) {
 				String codePostal = cc.getCodePostal();
-				if (codePostal.equalsIgnoreCase(c.getCodePostal())){
+				if (codePostal.equalsIgnoreCase(c.getCodePostal())) {
 					return cc;
 				}
 			}
@@ -393,18 +400,18 @@ public class CompanyFactory {
 				return cSirets.get(0);
 			}
 		}
-			
+
 		return null;
 	}
 
 	public boolean existSimilaireInsideBdd(Company c) {
-		Company cc = getCompanySimilaireInsideBdd( c) ;
-		return (cc!=null);
+		Company cc = getCompanySimilaireInsideBdd(c);
+		return (cc != null);
 	}
 
 	public void merge(Company c) {
-		Company cc = getCompanySimilaireInsideBdd( c) ;
-		if (cc== null){
+		Company cc = getCompanySimilaireInsideBdd(c);
+		if (cc == null) {
 			return;
 		}
 		cc.merge(c);
@@ -412,12 +419,11 @@ public class CompanyFactory {
 	}
 
 	public void delete(Company[] cc) {
-		for(int i=0;i<cc.length;i++){
-			Company c =cc[i];
+		for (int i = 0; i < cc.length; i++) {
+			Company c = cc[i];
 			this.delete(c);
 		}
 		this.saveAsXml();
 	}
-
 
 }

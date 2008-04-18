@@ -21,6 +21,7 @@ import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
 import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireExcel;
 import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireXML;
+import com.bg.annuaire.tool.fileFilter.FilterAnnuaireHtml;
 
 public class ToolAnuaireGui {
 
@@ -296,6 +297,7 @@ public class ToolAnuaireGui {
 
 		FileFilterAnnuaireXML filterXml = new FileFilterAnnuaireXML();
 		FileFilterAnnuaireExcel filterExcel = new FileFilterAnnuaireExcel();
+		FilterAnnuaireHtml filterHtml = new FilterAnnuaireHtml();
 		String fileName = "bddAnuaire." + FileFilterAnnuaireExcel.TYPE_CSV_excel;
 		File fSelected = new File(fCurrentDirectory, fileName);
 		fc.setSelectedFile(fSelected);
@@ -303,6 +305,7 @@ public class ToolAnuaireGui {
 		System.out.println("save processing ..." + (time2 - time1) + " ms");
 
 		fc.addChoosableFileFilter(filterXml);
+		fc.addChoosableFileFilter(filterHtml);
 		fc.addChoosableFileFilter(filterExcel);
 		long time3 = System.currentTimeMillis();
 		System.out.println("save processing .... " + (time3 - time2) + " ms");
@@ -315,6 +318,8 @@ public class ToolAnuaireGui {
 				this.toExcel(file);
 			}else if (filterXml.accept(file)){
 				CompanyFactory.getInstance().saveAsXml(file);
+			}else if (filterHtml.accept(file)){
+				CompanyFactory.getInstance().toHtml(file);
 			}
 		} else {
 			log("Open command cancelled by user.");
