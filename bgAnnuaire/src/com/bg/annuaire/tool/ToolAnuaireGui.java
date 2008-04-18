@@ -282,9 +282,16 @@ public class ToolAnuaireGui {
 	}
 	
 	private void save() {
-		System.out.println("No Implemented yet");
+		System.out.println("save processing .");
 		JFileChooser fc= new JFileChooser(fCurrentDirectory);
-		s
+		FileFilterAnnuaireXML filterXml = new FileFilterAnnuaireXML();
+		FileFilterAnnuaireExcel filterExcel = new FileFilterAnnuaireExcel();
+		   
+		System.out.println("save processing ..");
+		
+		fc.addChoosableFileFilter(filterXml);
+		fc.addChoosableFileFilter(filterExcel);
+		    System.out.println("save processing ...");
 		int returnVal = fc.showOpenDialog(this.frame);
 		 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	            File file = fc.getSelectedFile();
