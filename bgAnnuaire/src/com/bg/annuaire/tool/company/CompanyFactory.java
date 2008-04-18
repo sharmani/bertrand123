@@ -135,7 +135,7 @@ public class CompanyFactory {
 		toHtml(this.fileHtml);
 	}
 
-	public void toHtml(File f) {
+	public synchronized void toHtml(File f) {
 		this.fileHtml = f;
 		try {
 
