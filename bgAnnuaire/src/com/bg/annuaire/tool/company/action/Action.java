@@ -6,6 +6,7 @@ package com.bg.annuaire.tool.company.action;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +27,7 @@ public class Action {
 	 */
 	public Action() {
 	}
-
+	@Id
 	public long getId() {
 		return id;
 	}
