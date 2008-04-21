@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 import com.bg.annuaire.tool.company.Company;
+import com.bg.annuaire.tool.company.action.Action;
 
 public class UtilHibernateBg {
 
@@ -25,11 +26,15 @@ public class UtilHibernateBg {
 			annotationConfiguration .configure("hibernate.cfg.xml");
 			annotationConfiguration.setProperty("hibernate.connection.username", userName);
 			annotationConfiguration.setProperty("hibernate.connection.password", password);
-			String packageName = Company.class.getPackage().getName();
+			String packageName ;
+			packageName = Company.class.getPackage().getName();
 			System.out.println("------------ UtilHibernateBg  static start packageName: "+packageName);
+			annotationConfiguration.addPackage(packageName); //
+			packageName = Action.class.getPackage().getName();
 			annotationConfiguration.addPackage(packageName); //
 			System.out.println("------------ UtilHibernateBg  addPackage done");
 			annotationConfiguration.addAnnotatedClass(Company.class);
+			annotationConfiguration.addAnnotatedClass(Action.class);
 			sessionFactory = annotationConfiguration.buildSessionFactory();
 			logger.info("!UtilHibernateBg sessionFactory :::: "+sessionFactory);
 		} catch (Throwable ex) {
