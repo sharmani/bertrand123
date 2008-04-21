@@ -365,7 +365,7 @@ public class Company {
 		return "";
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_STORE")
+	@GeneratedValue
 	public long getId() {		
 		return id;
 	}

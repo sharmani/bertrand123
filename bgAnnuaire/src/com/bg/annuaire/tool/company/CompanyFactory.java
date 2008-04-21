@@ -343,9 +343,9 @@ public class CompanyFactory {
 					logger.info("commit ------------------ " + c.getName());
 					long id = c.getId();
 					logger.info("commit ------------------ " + id);
-					if (id == 0L) {
-						c.setId((long) i);
-					}
+					//if (id == 0L) {
+						//c.setId((long) i);
+					//}
 					UtilHibernateBg.getInstance().saveOrUpdate(c);
 					logger.info("commit -------------------------- " + c.getName() + " done");
 				}

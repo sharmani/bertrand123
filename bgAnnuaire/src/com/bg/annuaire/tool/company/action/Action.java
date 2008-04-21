@@ -31,7 +31,7 @@ public class Action {
 	public Action() {
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_STORE")
+	@GeneratedValue
 	public long getId() {
 		return id;
 	}
