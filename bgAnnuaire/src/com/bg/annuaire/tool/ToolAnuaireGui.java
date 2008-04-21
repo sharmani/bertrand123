@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -19,9 +21,7 @@ import javax.swing.JTextField;
 
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
-import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireExcel;
-import com.bg.annuaire.tool.fileFilter.FileFilterAnnuaireXML;
-import com.bg.annuaire.tool.fileFilter.FilterAnnuaireHtml;
+import com.bg.annuaire.tool.fileFilter.FileFilterBg;
 
 public class ToolAnuaireGui {
 
@@ -54,6 +54,12 @@ public class ToolAnuaireGui {
 	private JFrame frame = new JFrame();
 
 	private JTextField textFieldInfos = new JTextField();
+	
+	private JFileChooser fileChooser = new JFileChooser(fCurrentDirectory);
+	private FileFilterBg filterXml = new FileFilterBg("xml");
+	private FileFilterBg filterExcel = new FileFilterBg("CSV","Excell CSV");
+	private FileFilterBg filterHtml = new FileFilterBg("html");
+	
 
 	public ToolAnuaireGui() {
 		instance = this;
@@ -181,6 +187,7 @@ public class ToolAnuaireGui {
 		frame.setTitle("annuaire");
 		frame.pack();
 		frame.setVisible(true);
+		initSaveFileChooser();
 	}
 
 	protected void connectBdd() {
@@ -188,23 +195,21 @@ public class ToolAnuaireGui {
 		this.displayLogin();
 	}
 
+
 	private void toHtml() {
 		CompanyFactory.getInstance().toHtml();
 		this.log(" Generate html done");
 
 	}
-	
-	private void toExcel(){
+
+	private void toExcel() {
 		File f = CompanyFactory.getInstance().toExcel();
 		toExcel(f);
 	}
 
 	private void toExcel(File f) {
-		String fStr = "?? no file ??";
-		if (f != null) {
-			fStr = f.getAbsolutePath();
-		}
-		this.log(" Generate exceldone " + fStr);
+		CompanyFactory.getInstance().toExcel(f);
+		this.log(" Generate exceldone ");
 	}
 
 	private void displaySaisieDetail() {
@@ -287,44 +292,78 @@ public class ToolAnuaireGui {
 			e.printStackTrace();
 		}
 	}
-
+		
 	private void save() {
-		long time0 = System.currentTimeMillis();
-		System.out.println("save processing .");
-		JFileChooser fc = new JFileChooser(fCurrentDirectory);
-		long time1 = System.currentTimeMillis();
-		System.out.println("save processing .." + (time1 - time0) + " ms");
-
-		FileFilterAnnuaireXML filterXml = new FileFilterAnnuaireXML();
-		FileFilterAnnuaireExcel filterExcel = new FileFilterAnnuaireExcel();
-		FilterAnnuaireHtml filterHtml = new FilterAnnuaireHtml();
-		String fileName = "bddAnuaire." + FileFilterAnnuaireExcel.TYPE_CSV_excel;
-		File fSelected = new File(fCurrentDirectory, fileName);
-		fc.setSelectedFile(fSelected);
-		long time2 = System.currentTimeMillis();
-		System.out.println("save processing ..." + (time2 - time1) + " ms");
-
-		fc.addChoosableFileFilter(filterXml);
-		fc.addChoosableFileFilter(filterHtml);
-		fc.addChoosableFileFilter(filterExcel);
-		long time3 = System.currentTimeMillis();
-		System.out.println("save processing .... " + (time3 - time2) + " ms");
-		int returnVal = fc.showOpenDialog(this.frame);
+		int returnVal = fileChooser.showSaveDialog(this.frame);
+		//int returnVal = fileChooser.showOpenDialog(this.frame);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
+			System.out.println("DileSelected: " + file + "  exists: " + file.exists());
 			// This is where a real application would open the file.
 			log("Opening: " + file.getName());
-			if(filterExcel.accept(file)){
+			if (filterExcel.accept(file)) {
 				this.toExcel(file);
-			}else if (filterXml.accept(file)){
+			} else if (filterXml.accept(file)) {
 				CompanyFactory.getInstance().saveAsXml(file);
-			}else if (filterHtml.accept(file)){
+			} else if (filterHtml.accept(file)) {
 				CompanyFactory.getInstance().toHtml(file);
 			}
 		} else {
 			log("Open command cancelled by user.");
 		}
 
+	}
+	
+	
+	private void  initSaveFileChooser(){
+		long time0 = System.currentTimeMillis();
+		System.out.println("save processing .");
+		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		long time1 = System.currentTimeMillis();
+		System.out.println("save processing .." + (time1 - time0) + " ms");
+
+		String fileName = "bddAnuaire." + filterExcel.getExtension();
+		File fSelected = new File(fCurrentDirectory, fileName);
+		System.out.println(" fc.getSelectedFile  AA:"+fileChooser.getSelectedFile());
+		fileChooser.setDialogTitle("Save ");
+		fileChooser.setName("nameZoooooorg");
+		long time2 = System.currentTimeMillis();
+		fileChooser.setMultiSelectionEnabled(false);
+		System.out.println("save processing ..." + (time2 - time1) + " ms "+fileChooser.getSelectedFile());
+
+		fileChooser.addChoosableFileFilter(filterXml);
+		fileChooser.addChoosableFileFilter(filterHtml);
+		fileChooser.addChoosableFileFilter(filterExcel);
+
+		long time3 = System.currentTimeMillis();
+		fileChooser.setSelectedFile(fSelected);
+		
+		System.out.println("save processing .... " + (time3 - time2) + " ms   "+fileChooser.getSelectedFile());
+		fileChooser.addPropertyChangeListener(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				System.out.println("FileChanged "+evt.getOldValue()+"  "+evt.getNewValue()+"  "+evt.getSource().getClass());
+				if (evt.getNewValue()== null){
+					if (evt.getOldValue()!= null){
+						JFileChooser fc = (JFileChooser)evt.getSource();
+						File fOld = (File) evt.getOldValue();
+						File dir = fc.getCurrentDirectory();
+						File f = new File(dir, fOld.getName());
+						fc.setSelectedFile(f);
+						//File fNew = new File(fc.getS)
+					}
+				}
+			}
+		});
+			
+		fileChooser.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				FileFilterBg ff = (FileFilterBg) evt.getNewValue();				
+				ff.changeExtensionFileSelected(fileChooser);
+			}
+		});
+		
 	}
 
 }
