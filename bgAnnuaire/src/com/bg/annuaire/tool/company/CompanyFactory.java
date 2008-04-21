@@ -35,7 +35,7 @@ public class CompanyFactory {
 
 	private File fileXml = new File("bddAnnuaire.xml");
 
-	private File fileHtml =  new File("bddCompanies" + ".html");;
+	private File fileHtml = new File("bddCompanies" + ".html");;
 
 	private static CompanyFactory instance;
 
@@ -186,8 +186,13 @@ public class CompanyFactory {
 	}
 
 	public File toExcel() {
+		File f = getFileExcel();
+		return toExcel(f);
+	}
+
+	public File toExcel(File f) {
 		try {
-			File f = getFileExcel();
+			System.out.println("toExcel: "+f.getAbsolutePath()+" exists:"+f.exists());
 			FileWriter fw = new FileWriter(f);
 			for (Company c : this.list) {
 				fw.write(c.toStringExcel() + "\n");
