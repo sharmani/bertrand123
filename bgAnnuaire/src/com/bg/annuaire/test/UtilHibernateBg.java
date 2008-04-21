@@ -35,6 +35,7 @@ public class UtilHibernateBg {
 			System.out.println("------------ UtilHibernateBg  addPackage done");
 			annotationConfiguration.addAnnotatedClass(Company.class);
 			annotationConfiguration.addAnnotatedClass(Action.class);
+			
 			sessionFactory = annotationConfiguration.buildSessionFactory();
 			logger.info("!UtilHibernateBg sessionFactory :::: "+sessionFactory);
 		} catch (Throwable ex) {

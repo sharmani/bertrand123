@@ -6,7 +6,10 @@ package com.bg.annuaire.tool.company.action;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+//import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +31,7 @@ public class Action {
 	public Action() {
 	}
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_STORE")
 	public long getId() {
 		return id;
 	}
