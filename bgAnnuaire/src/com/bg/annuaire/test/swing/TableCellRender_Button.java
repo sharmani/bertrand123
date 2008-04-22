@@ -26,13 +26,8 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	// Instance Variables
 	//
 
-	/** The Swing component being edited. */
-	protected JButton button__;
 
 
-	private String label_;
-
-	private boolean isEditable = false;
 	
 	/**
 	 * An integer specifying the number of clicks needed to start editing. Even
@@ -63,12 +58,10 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (isSelected) {
 			button.setEnabled(true);
-			isEditable = true;
 			// button.setForeground(table.getSelectionForeground());
 			// button.setBackground(table.getSelectionBackground());
 		} else {
 			button.setEnabled(false);
-			isEditable = false;
 			// button.setForeground(table.getForeground());
 			// button.setBackground(table.getBackground());
 		}
@@ -196,7 +189,9 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	 * @see #isCellEditable
 	 */
 	public boolean shouldSelectCell(EventObject anEvent) {
-		return true;
+		System.out.println("shouldSelectCell");
+		//return true;
+		return false;
 	}
 
 	/**
@@ -206,6 +201,7 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	 *            the event
 	 */
 	public boolean startCellEditing(EventObject anEvent) {
+		System.out.println("startCellEditing");
 		return true;
 	}
 
@@ -216,6 +212,7 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	 * @return true
 	 */
 	public boolean stopCellEditing() {
+		System.out.println("stopCellEditing");
 		fireEditingStopped();
 		return true;
 	}
@@ -224,6 +221,7 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 	 * Cancels editing. This method calls <code>fireEditingCanceled</code>.
 	 */
 	public void cancelCellEditing() {
+		System.out.println("cancelCellEditing");
 		fireEditingCanceled();
 	}
 
