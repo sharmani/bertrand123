@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,11 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
+import com.bg.annuaire.test.swing.TableCellRender_Button;
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
 
-public class PanelListCompany extends JPanel {
+public class PanelListCompany extends JPanel implements ActionListener {
 
 	private JPanel panelGlobal = new JPanel();
 
@@ -70,7 +72,6 @@ public class PanelListCompany extends JPanel {
 			JPanel p = new JPanel(new GridLayout(1, 0));
 			p.add(new JLabel(c.getName()));
 			p.add(new JLabel(c.getSiret()));
-
 			oo[i][0] = i;
 			oo[i][1] = c.getName();
 			oo[i][2] = c.getSiret();
@@ -84,6 +85,13 @@ public class PanelListCompany extends JPanel {
 		}
 		MyTableModel model = new MyTableModel(oo);
 		this.table = new JTable(model);
+		////
+		TableColumnModel tcm = table.getColumnModel();
+		TableColumn tc = tcm.getColumn(0);
+		TableCellRender_Button cell_button = new TableCellRender_Button(this);
+		tc.setCellRenderer(cell_button);
+		tc.setCellEditor(cell_button);
+		////
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
@@ -101,20 +109,20 @@ public class PanelListCompany extends JPanel {
 		System.out.println("DeleteCompany");
 		int[] numeroRowSelected = this.table.getSelectedRows();
 		Company[] cc = new Company[numeroRowSelected.length];
-		String names="";
+		String names = "";
 		for (int k = 0; k < numeroRowSelected.length; k++) {
 			int ii = table.convertRowIndexToModel(numeroRowSelected[k]);
 			Company c = this.listCompany.get(ii);
 			cc[k] = c;
-			names+=""+c.getName()+", ";
+			names += "" + c.getName() + ", ";
 		}
-		int r = JOptionPane.showConfirmDialog(this, "Confirm delete " +numeroRowSelected.length+" companies \n"+ names + " ?");
+		int r = JOptionPane.showConfirmDialog(this, "Confirm delete " + numeroRowSelected.length + " companies \n" + names + " ?");
 		if (r == JOptionPane.YES_OPTION) {
 			CompanyFactory.getInstance().delete(cc);
 			this.initPanelGlobal();
 			this.updateUI();
 		}
-		
+
 	}
 
 	private void editCompany() {
@@ -131,6 +139,11 @@ public class PanelListCompany extends JPanel {
 		this.initPanelGlobal();
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("!!----------------------actionPerformed :" + e.getActionCommand());
+	}
+
 	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 	private class MyTableModel extends AbstractTableModel {
@@ -139,7 +152,7 @@ public class PanelListCompany extends JPanel {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] columnNames = { "id","Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" };
+		private String[] columnNames = { "id", "Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" };
 
 		private Object[][] data;
 
@@ -173,10 +186,10 @@ public class PanelListCompany extends JPanel {
 		public boolean isCellEditable(int row, int col) {
 			// Note that the data/cell address is constant,
 			// no matter where the cell appears onscreen.
-			if (col < 2) {
-				return false;
-			} else {
+			if (col == 0) {
 				return true;
+			} else {
+				return false;
 			}
 		}
 
@@ -185,10 +198,15 @@ public class PanelListCompany extends JPanel {
 		 * change.
 		 */
 		public void setValueAt(Object value, int row, int col) {
+			if (col==0){
+				return;
+			}
 			data[row][col] = value;
 			fireTableCellUpdated(row, col);
 		}
 
 	}
+
+	
 
 }

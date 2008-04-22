@@ -6,10 +6,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.StringTokenizer;
 
+import javax.swing.DefaultCellEditor;
+
 public class MainAnnuaire {
 
 	public MainAnnuaire() {
 		// TODO Auto-generated constructor stub
+		DefaultCellEditor d;
 	}
 
 	/**
