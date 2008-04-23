@@ -94,7 +94,6 @@ public class CompanyFactory {
 	}
 
 	public synchronized void saveAsXml() {
-
 		this.saveAsXml(this.fileXml);
 	}
 
@@ -274,6 +273,17 @@ public class CompanyFactory {
 		}
 		return l;
 	}
+	
+	public Company getCompanyById(Long idCompany) {
+		ArrayList<Company> l = new ArrayList<Company>();
+		for (Company c : list) {
+			long id = c.getId();
+			if (id== idCompany) {
+				return c;
+			}
+		}
+		return null;
+	}
 
 	public List<Company> getCompaniesByTelephone(String telephone) {
 		ArrayList<Company> l = new ArrayList<Company>();
@@ -330,7 +340,7 @@ public class CompanyFactory {
 		}
 	}
 
-	public void commit() {
+	public void commitInBdd() {
 		try {
 			Iterator<Company> ite = list.iterator();
 			Session session = UtilHibernateBg.getInstance().getSession();
@@ -430,5 +440,7 @@ public class CompanyFactory {
 		}
 		this.saveAsXml();
 	}
+
+	
 
 }

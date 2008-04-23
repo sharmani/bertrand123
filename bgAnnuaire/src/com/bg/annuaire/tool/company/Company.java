@@ -209,7 +209,6 @@ public class Company {
 
 	public void save() {
 		this.dateModification = simpleDateFormat.format(new Date());
-		CompanyFactory.getInstance().saveAsXml();
 	}
 
 	public String toStringXml() {
@@ -233,7 +232,7 @@ public class Company {
 		s += "\n </company>";
 		return s;
 	}
-
+	@Transient
 	private String putInTag(String tag, String name2) {
 
 		return "\n     <" + tag + ">" + name2 + "</" + tag + ">";
@@ -249,11 +248,11 @@ public class Company {
 	public void setEffectif(String effectif) {
 		this.effectif = effectif;
 	}
-
+	@Transient
 	public String toString() {
 		return "Company: " + this.name + " " + this.telephone + " " + this.fax + " " + this.eMail + " " + this.effectif + "  " + this.naf + "  " + this.siret + "  " + this.site + "  " + this.adresse+"  " +this.contacts+"  "+this.classification+ "  " + this.dateModification;
 	}
-
+	@Transient
 	public String toStringDetail() {
 		String s = "";
 		s += " name : " + this.name;

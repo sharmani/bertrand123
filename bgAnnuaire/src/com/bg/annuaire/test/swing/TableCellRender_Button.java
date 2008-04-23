@@ -75,6 +75,7 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 
 	private void setText(Object value) {
 		button.setText("Détail: " + value);
+		button.setActionCommand(""+value);
 		// button.setActionCommand(""+value);
 	}
 
@@ -175,6 +176,7 @@ public class TableCellRender_Button extends AbstractCellEditor implements TableC
 
 	public boolean isCellEditable(EventObject anEvent) {
 		if (anEvent instanceof MouseEvent) {
+			
 			return ((MouseEvent) anEvent).getClickCount() >= clickCountToStart;
 		}
 		return true;

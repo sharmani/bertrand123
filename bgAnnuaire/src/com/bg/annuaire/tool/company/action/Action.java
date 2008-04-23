@@ -12,6 +12,8 @@ import javax.persistence.Id;
 //import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bg.annuaire.test.UtilHibernateBg;
+
 /**
  * @author BertGuir
  * 
@@ -63,5 +65,10 @@ public class Action {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public void saveOrUpdate() {
+		UtilHibernateBg.getInstance().saveOrUpdate(this);
+	}
+
 
 }

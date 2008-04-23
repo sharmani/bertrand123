@@ -245,7 +245,8 @@ public class ToolAnuaireGui {
 	}
 
 	public void displayDetailForValidation(Company c) {
-		this.panelSaisie.setCompanyCurrent(null);
+		
+		this.panelSaisie.setCompanyCurrent(c);
 		this.panelSaisie.displayCompany(c);
 		this.displaySaisieDetail();
 
@@ -261,7 +262,7 @@ public class ToolAnuaireGui {
 	}
 
 	private void commit() {
-		CompanyFactory.getInstance().commit();
+		CompanyFactory.getInstance().commitInBdd();
 		this.log("commit nb companies : " + CompanyFactory.getInstance().getList().size());
 	}
 
@@ -364,6 +365,11 @@ public class ToolAnuaireGui {
 			}
 		});
 		
+	}
+
+	public void displayDetail(Long idCompany) {
+		Company c = CompanyFactory.getInstance().getCompanyById(idCompany);
+		this.displayDetailForValidation(c);
 	}
 
 }

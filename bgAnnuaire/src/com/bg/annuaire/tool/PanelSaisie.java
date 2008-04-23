@@ -1,6 +1,7 @@
 package com.bg.annuaire.tool;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -19,6 +21,8 @@ import javax.swing.JTextField;
 
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
+import com.bg.annuaire.tool.company.action.Action;
+import com.bg.annuaire.tool.company.action.ActionFactory;
 
 public class PanelSaisie extends JPanel {
 
@@ -42,7 +46,11 @@ public class PanelSaisie extends JPanel {
 
 	private JTextArea textAreaComment = new JTextArea(1, 12);
 
+	private JTextArea textAreaNewAction = new JTextArea(1, 12);
+
 	private Company companyCurrent;
+	
+	private static final Dimension dimLabel = new Dimension(80, 20);
 
 	public PanelSaisie() {
 		super();
@@ -73,6 +81,10 @@ public class PanelSaisie extends JPanel {
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
+		
+		this.textAreaAdresse.setBorder(BorderFactory.createLineBorder(Color.RED));
+		this.textAreaNewAction.setBorder(BorderFactory.createLineBorder(Color.RED));
+		this.textAreaComment.setBorder(BorderFactory.createLineBorder(Color.RED));
 
 		p.add(this.createPanel("Nom", this.textFieldNAme));
 		p.add(this.createPanel("Commentaire", this.textAreaComment));
@@ -83,7 +95,9 @@ public class PanelSaisie extends JPanel {
 		p.add(this.createPanel("eMail", this.textFieldEmail));
 		p.add(this.createPanel("Site", this.textFieldSite));
 		p.add(this.createPanel("Effectifs", this.textFieldEffectif));
-		p.add(this.createPanel("Adresse", this.textAreaAdresse));
+		p.add(this.createPanel("Adresse", this.textAreaAdresse));	
+		p.add(this.createPanel("Nouvelle Action", this.textAreaNewAction));	
+		p.add(this.createPanel("actions", this.panelListAction)); 
 
 		JButton buttonSave = new JButton("save");
 		buttonSave.addActionListener(new ActionListener() {
@@ -106,10 +120,22 @@ public class PanelSaisie extends JPanel {
 		this.add(panelNavigation, BorderLayout.NORTH);
 	}
 
+	private JPanel panelListAction = new JPanel(new GridLayout(0,3));
+	private Component getPanelActions___() {
+		JPanel panelActions = new JPanel();
+		panelActions.setLayout(new BorderLayout());
+		panelActions.add(new JLabel("Actions:"), BorderLayout.WEST);
+		
+		
+		panelActions.add(panelListAction,BorderLayout.CENTER);
+		
+		return panelActions;
+	}
+
 	private Component createPanel(String name, JComponent c) {
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(name);
-		Dimension dimLabel = new Dimension(80, 20);
+		
 		Dimension dimC = new Dimension(120, 20);
 		label.setPreferredSize(dimLabel);
 		c.setPreferredSize(dimC);
@@ -131,6 +157,14 @@ public class PanelSaisie extends JPanel {
 		this.textFieldSite.setText("");
 		this.textFieldTelephone.setText("");
 		this.textAreaComment.setText("");
+		this.panelListAction.removeAll();
+		this.textAreaNewAction.setText("");
+		List<Action> listAction = ActionFactory.getInstance().getListActionByCompany(this.companyCurrent);
+		for(Action action:listAction){
+			panelListAction.add(new JLabel(""+action.getId()));
+			panelListAction.add(new JLabel(""+action.getDate()));
+			panelListAction.add(new JLabel(""+action.getComment()));
+		}
 	}
 
 	private boolean checkBeforeCreateNewCompany() {
@@ -180,7 +214,6 @@ public class PanelSaisie extends JPanel {
 			this.checkBeforeCreateNewCompany();
 			this.companyCurrent = new Company();
 			CompanyFactory.getInstance().add(this.companyCurrent);
-
 		}
 		companyCurrent.setAdresse(this.textAreaAdresse.getText());
 		companyCurrent.setEMail(this.textFieldEmail.getText());
@@ -194,6 +227,15 @@ public class PanelSaisie extends JPanel {
 		companyCurrent.setComment(this.textAreaComment.getText());
 
 		companyCurrent.save();
+		String actionText = this.textAreaNewAction.getText();
+		if (actionText.trim().length()<=0){
+			
+		}else {
+			Action action = new Action();
+			action.setIdCompany(this.companyCurrent.getId());
+			action.setComment(actionText);
+			action.saveOrUpdate();
+		}
 		this.initTextField();
 	}
 

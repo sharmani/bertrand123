@@ -142,6 +142,14 @@ public class PanelListCompany extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("!!----------------------actionPerformed :" + e.getActionCommand());
+		String command = e.getActionCommand();
+		try {
+			Long id = Long.parseLong(command.trim());
+			ToolAnuaireGui.getInstance().displayDetail(id);
+		} catch (Exception e1) {
+			ToolAnuaireGui.getInstance().log("Exception "+e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 
 	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
