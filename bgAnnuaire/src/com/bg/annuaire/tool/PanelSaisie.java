@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -96,8 +97,13 @@ public class PanelSaisie extends JPanel {
 		p.add(this.createPanel("Site", this.textFieldSite));
 		p.add(this.createPanel("Effectifs", this.textFieldEffectif));
 		p.add(this.createPanel("Adresse", this.textAreaAdresse));	
-		p.add(this.createPanel("Nouvelle Action", this.textAreaNewAction));	
-		p.add(this.createPanel("actions", this.panelListAction)); 
+		p.add(this.createPanel("Nouvelle Action", this.textAreaNewAction));
+		JScrollPane scrollPane = new JScrollPane(this.panelListAction);
+		
+		
+		JPanel pp = new JPanel(new BorderLayout());
+		pp.add(p,BorderLayout.CENTER);
+		pp.add(this.createPanel("actions", scrollPane),BorderLayout.SOUTH); 
 
 		JButton buttonSave = new JButton("save");
 		buttonSave.addActionListener(new ActionListener() {
@@ -116,7 +122,7 @@ public class PanelSaisie extends JPanel {
 		panelSave.add(buttonSave);
 		panelSave.add(buttonDelete);
 		p.add(panelSave);
-		this.add(p, BorderLayout.CENTER);
+		this.add(pp, BorderLayout.CENTER);
 		this.add(panelNavigation, BorderLayout.NORTH);
 	}
 
@@ -159,13 +165,9 @@ public class PanelSaisie extends JPanel {
 		this.textAreaComment.setText("");
 		this.panelListAction.removeAll();
 		this.textAreaNewAction.setText("");
-		List<Action> listAction = ActionFactory.getInstance().getListActionByCompany(this.companyCurrent);
-		for(Action action:listAction){
-			panelListAction.add(new JLabel(""+action.getId()));
-			panelListAction.add(new JLabel(""+action.getDate()));
-			panelListAction.add(new JLabel(""+action.getLogin()));
-			panelListAction.add(new JLabel(""+action.getComment()));
-		}
+		this.panelListAction.removeAll();
+		
+	
 	}
 
 	private boolean checkBeforeCreateNewCompany() {
@@ -227,7 +229,7 @@ public class PanelSaisie extends JPanel {
 		companyCurrent.setEffectif(this.textFieldEffectif.getText());
 		companyCurrent.setComment(this.textAreaComment.getText());
 
-		companyCurrent.save();
+		
 		String actionText = this.textAreaNewAction.getText();
 		if (actionText.trim().length()<=0){
 			
@@ -236,8 +238,10 @@ public class PanelSaisie extends JPanel {
 			action.setIdCompany(this.companyCurrent.getId());
 			action.setComment(actionText);
 			action.saveOrUpdate();
+			companyCurrent.incrementNbActions();
 		}
 		this.initTextField();
+		companyCurrent.save();
 	}
 
 	private void delete() {
@@ -271,6 +275,7 @@ public class PanelSaisie extends JPanel {
 			return;
 		}
 		displayCompany(this.companyCurrent);
+		this.updateUI();
 	}
 
 	public void displayCompany(Company c) {
@@ -284,6 +289,14 @@ public class PanelSaisie extends JPanel {
 		this.textFieldSite.setText(c.getSite());
 		this.textFieldTelephone.setText(c.getTelephone());
 		this.textAreaComment.setText(c.getComment());
+		List<Action> listAction = ActionFactory.getInstance().getListActionByCompany(this.companyCurrent);
+		for(Action action:listAction){
+			panelListAction.add(new JLabel(""+action.getId()));
+			panelListAction.add(new JLabel(""+action.getDate()));
+			panelListAction.add(new JLabel(""+action.getLogin()));
+			panelListAction.add(new JLabel(""+action.getComment()));
+		}
+		this.updateUI();
 	}
 
 	public Company getCompanyCurrent() {

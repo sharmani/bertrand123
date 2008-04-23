@@ -17,6 +17,9 @@ public class ActionFactory {
 	}
 
 	public static ActionFactory getInstance() {
+		if (instance == null){
+			instance= new ActionFactory();
+		}
 		return instance;
 	}
 
@@ -33,6 +36,9 @@ public class ActionFactory {
 		String q = "from " + Action.class.getName() + " as aa where (aa.idCompany = " + idCompany + ")";
 		Query query = session.createQuery(q);
 		List<Action> list = query.list();
+		if (list == null){
+			return new ArrayList<Action>();
+		}
 		return list;
 	}
 

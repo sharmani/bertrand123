@@ -17,11 +17,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.bg.util2.GenerateurId;
+
 @Entity
-@Table(name="Company2")
+@Table(name = "Company2")
 public class Company {
-	
-	private long id=0;
+
+	private long id = 0;
 
 	private String name = "";
 
@@ -48,10 +49,12 @@ public class Company {
 	private String dateModification = "";
 
 	private String comment = "";
-	
-	private String contacts="";
-	
-	private String classification="";
+
+	private String contacts = "";
+
+	private String classification = "";
+
+	private int nbActions = 0;
 
 	private final static String tag_name = "name";
 
@@ -78,8 +81,11 @@ public class Company {
 	private final static String tag_codePostal = "codePostal";
 
 	private final static String tag_date_modification = "dateModification";
+
 	private final static String tag_id = "id";
+
 	private final static String tag_contacts = "contacts";
+
 	private final static String tag_classification = "classification";
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -123,20 +129,21 @@ public class Company {
 				this.codePostal = value;
 			} else if (tagName.equals(tag_contacts)) {
 				this.contacts = value;
-			}  else if (tagName.equals(tag_classification)) {
+			} else if (tagName.equals(tag_classification)) {
 				this.classification = value;
 			} else if (tagName.equals(tag_id)) {
 				try {
-					this.id=Long.parseLong(value);
+					this.id = Long.parseLong(value);
 				} catch (NumberFormatException e1) {
 				}
 			} else if (tagName.equals("#text")) {
 
-			} else{
-				//System.err.println("TAg non reconnu!!! tagName>" + tagName + "<   value:>" + value + "<");
+			} else {
+				// System.err.println("TAg non reconnu!!! tagName>" + tagName +
+				// "< value:>" + value + "<");
 			}
 		}
-		//System.out.println("Company.constructeur " + this);
+		// System.out.println("Company.constructeur " + this);
 
 	}
 
@@ -165,7 +172,7 @@ public class Company {
 	}
 
 	public String getAdresse() {
-		if (adresse== null){
+		if (adresse == null) {
 			return "";
 		}
 		return adresse;
@@ -226,12 +233,13 @@ public class Company {
 		s += this.putInTag(tag_site, this.site);
 		s += this.putInTag(tag_date_modification, this.dateModification);
 		s += this.putInTag(tag_comment, this.comment);
-		s += this.putInTag(tag_id, ""+this.id);
-		s += this.putInTag(tag_contacts, ""+this.contacts);
-		s += this.putInTag(tag_classification, ""+this.classification);
+		s += this.putInTag(tag_id, "" + this.id);
+		s += this.putInTag(tag_contacts, "" + this.contacts);
+		s += this.putInTag(tag_classification, "" + this.classification);
 		s += "\n </company>";
 		return s;
 	}
+
 	@Transient
 	private String putInTag(String tag, String name2) {
 
@@ -239,8 +247,8 @@ public class Company {
 	}
 
 	public String getEffectif() {
-		if (this.effectif== null){
-			effectif="";
+		if (this.effectif == null) {
+			effectif = "";
 		}
 		return effectif;
 	}
@@ -248,10 +256,12 @@ public class Company {
 	public void setEffectif(String effectif) {
 		this.effectif = effectif;
 	}
+
 	@Transient
 	public String toString() {
-		return "Company: " + this.name + " " + this.telephone + " " + this.fax + " " + this.eMail + " " + this.effectif + "  " + this.naf + "  " + this.siret + "  " + this.site + "  " + this.adresse+"  " +this.contacts+"  "+this.classification+ "  " + this.dateModification;
+		return "Company: " + this.name + " " + this.telephone + " " + this.fax + " " + this.eMail + " " + this.effectif + "  " + this.naf + "  " + this.siret + "  " + this.site + "  " + this.adresse + "  " + this.contacts + "  " + this.classification + "  " + this.dateModification;
 	}
+
 	@Transient
 	public String toStringDetail() {
 		String s = "";
@@ -281,8 +291,8 @@ public class Company {
 	}
 
 	public String getComment() {
-		if (this.comment== null){
-			comment="";
+		if (this.comment == null) {
+			comment = "";
 		}
 		return comment;
 	}
@@ -328,8 +338,8 @@ public class Company {
 	}
 
 	public String getVille() {
-		if (this.ville== null){
-			ville="";
+		if (this.ville == null) {
+			ville = "";
 		}
 		return ville;
 	}
@@ -339,8 +349,8 @@ public class Company {
 	}
 
 	public String getCodePostal() {
-		if (this.codePostal== null){
-			codePostal="";
+		if (this.codePostal == null) {
+			codePostal = "";
 		}
 		return codePostal;
 	}
@@ -348,14 +358,17 @@ public class Company {
 	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
 	}
+
 	@Transient
 	public String getVilleEncoded() {
 		return URLEncoder.encode(this.getVille());
 	}
+
 	@Transient
 	public String getNameEncoded() {
 		return URLEncoder.encode(this.name);
 	}
+
 	@Transient
 	public String getDepartement() {
 		if (this.codePostal.length() == 5) {
@@ -363,9 +376,10 @@ public class Company {
 		}
 		return "";
 	}
+
 	@Id
 	@GeneratedValue
-	public long getId() {		
+	public long getId() {
 		return id;
 	}
 
@@ -374,8 +388,8 @@ public class Company {
 	}
 
 	public String getContacts() {
-		if (this.contacts== null){
-			contacts="";
+		if (this.contacts == null) {
+			contacts = "";
 		}
 		return contacts;
 	}
@@ -385,7 +399,7 @@ public class Company {
 	}
 
 	public String getClassification() {
-		if (this.classification==null){
+		if (this.classification == null) {
 			return "";
 		}
 		return classification;
@@ -396,58 +410,79 @@ public class Company {
 	}
 
 	public void merge(Company c) {
-		this.name=merge(name,c.name);
-		this.adresse=merge(adresse,c.adresse);
-		this.classification=merge(this.classification,c.classification);
-		this.codePostal=merge(this.codePostal,c.codePostal);
-		this.comment=merge(this.comment,c.comment);
-		this.effectif=merge(this.effectif,c.effectif);
-		this.eMail=merge(this.eMail,c.eMail);
-		this.fax=merge(this.fax,c.fax);
-		this.siret=merge(this.siret,c.siret);
-		this.site=merge(this.site,c.site);
-		this.contacts=merge(this.contacts,c.contacts);
-		this.telephone=merge(this.telephone,c.telephone);
-		this.ville=merge(this.ville,c.ville);
-		this.contacts=merge(this.contacts,c.contacts);
+		this.name = merge(name, c.name);
+		this.adresse = merge(adresse, c.adresse);
+		this.classification = merge(this.classification, c.classification);
+		this.codePostal = merge(this.codePostal, c.codePostal);
+		this.comment = merge(this.comment, c.comment);
+		this.effectif = merge(this.effectif, c.effectif);
+		this.eMail = merge(this.eMail, c.eMail);
+		this.fax = merge(this.fax, c.fax);
+		this.siret = merge(this.siret, c.siret);
+		this.site = merge(this.site, c.site);
+		this.contacts = merge(this.contacts, c.contacts);
+		this.telephone = merge(this.telephone, c.telephone);
+		this.ville = merge(this.ville, c.ville);
+		this.contacts = merge(this.contacts, c.contacts);
 	}
-	
-	private String merge(String s1, String s2){
-		if (s1== null){
+
+	private String merge(String s1, String s2) {
+		if (s1 == null) {
 			return s2;
 		}
-		if (s2== null){
+		if (s2 == null) {
 			return s1;
 		}
-		if (s1.trim().length()==0){
+		if (s1.trim().length() == 0) {
 			return s2;
 		}
-		if (s2.trim().length()==0){
+		if (s2.trim().length() == 0) {
 			return s1;
 		}
 		return s2;
 
 	}
 
-	private final static String Excel_Separator=",";
+	private final static String Excel_Separator = ",";
+
 	public String toStringExcel() {
-		
-		String r=  this.getName().replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getAdresse().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getCodePostal().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getVille().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getClassification().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getComment().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getContacts().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getTelephone().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getEMail().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getFax().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getEffectif().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getNaf().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getSiret().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		r+=this.getSite().replace('\n', ' ').replace(Excel_Separator, " ")+Excel_Separator;
-		
+
+		String r = this.getName().replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getAdresse().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getCodePostal().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getVille().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getClassification().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getComment().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getContacts().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getTelephone().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getEMail().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getFax().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getEffectif().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getNaf().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getSiret().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+		r += this.getSite().replace('\n', ' ').replace(Excel_Separator, " ") + Excel_Separator;
+
 		return r;
+	}
+
+	public int getNbActions() {
+		return nbActions;
+	}
+
+	public void setNbActions(int nbActions) {
+		this.nbActions = nbActions;
+	}
+
+	public void setNbActions(Integer nbActions) {
+		if (nbActions == null) {
+
+		} else {
+			this.nbActions = nbActions;
+		}
+	}
+
+	public void incrementNbActions() {
+		this.nbActions++;
 	}
 
 }

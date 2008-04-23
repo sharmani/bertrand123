@@ -64,11 +64,10 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		this.listCompany = CompanyFactory.getInstance().getList();
 
 		Iterator<Company> ite = listCompany.iterator();
-		Object[][] oo = new Object[listCompany.size()][8];
+		Object[][] oo = new Object[listCompany.size()][9];
 		int i = 0;
 		while (ite.hasNext()) {
 			Company c = ite.next();
-
 			JPanel p = new JPanel(new GridLayout(1, 0));
 			p.add(new JLabel(c.getName()));
 			p.add(new JLabel(c.getSiret()));
@@ -80,8 +79,8 @@ public class PanelListCompany extends JPanel implements ActionListener {
 			oo[i][5] = c.getCodePostal();
 			oo[i][6] = c.getVille();
 			oo[i][7] = c.getEffectif();
+			oo[i][8] = ""+c.getNbActions();
 			i++;
-
 		}
 		MyTableModel model = new MyTableModel(oo);
 		this.table = new JTable(model);
@@ -126,8 +125,8 @@ public class PanelListCompany extends JPanel implements ActionListener {
 	}
 
 	private void editCompany() {
-		System.out.println("DeleteCompany");
 		int i = table.getSelectedRow();
+		System.out.println("EditCompany  selecteRow:"+i);
 		int ii = table.convertRowIndexToModel(i);
 
 		Company c = this.listCompany.get(ii);
@@ -160,7 +159,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] columnNames = { "id", "Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" };
+		private String[] columnNames = { "id", "Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" ,"nbActions"};
 
 		private Object[][] data;
 
