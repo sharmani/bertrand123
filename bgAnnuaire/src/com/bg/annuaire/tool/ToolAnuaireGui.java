@@ -60,6 +60,15 @@ public class ToolAnuaireGui {
 	private FileFilterBg filterExcel = new FileFilterBg("CSV","Excell CSV");
 	private FileFilterBg filterHtml = new FileFilterBg("html");
 	
+	private String login ="default";
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
 	public ToolAnuaireGui() {
 		instance = this;
