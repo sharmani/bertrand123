@@ -120,7 +120,7 @@ public class PanelSaisie extends JPanel {
 		this.add(panelNavigation, BorderLayout.NORTH);
 	}
 
-	private JPanel panelListAction = new JPanel(new GridLayout(0,3));
+	private JPanel panelListAction = new JPanel(new GridLayout(0,4));
 	private Component getPanelActions___() {
 		JPanel panelActions = new JPanel();
 		panelActions.setLayout(new BorderLayout());
@@ -163,6 +163,7 @@ public class PanelSaisie extends JPanel {
 		for(Action action:listAction){
 			panelListAction.add(new JLabel(""+action.getId()));
 			panelListAction.add(new JLabel(""+action.getDate()));
+			panelListAction.add(new JLabel(""+action.getLogin()));
 			panelListAction.add(new JLabel(""+action.getComment()));
 		}
 	}

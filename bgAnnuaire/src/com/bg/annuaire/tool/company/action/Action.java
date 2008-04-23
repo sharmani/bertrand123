@@ -26,6 +26,7 @@ public class Action {
 	private long idCompany = 0;
 	private String comment = "";
 	private Date date = new Date();
+	private String login="";
 
 	/**
 	 * 
@@ -69,6 +70,10 @@ public class Action {
 	public void saveOrUpdate() {
 		UtilHibernateBg.getInstance().saveOrUpdate(this);
 	}
-
-
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
 }
