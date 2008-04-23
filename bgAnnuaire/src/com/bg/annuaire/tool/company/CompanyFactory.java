@@ -238,18 +238,21 @@ public class CompanyFactory {
 
 	public Company getPreviousCompany(Company companyCurrent) {
 		int i = this.list.indexOf(companyCurrent);
-		if ((i + 1) >= this.list.size()) {
-			return null;
+		int ii = i+1;
+		if (ii >= this.list.size()) {
+			ii =0;
 		}
-		return this.list.get(i + 1);
+		return this.list.get(ii);
 	}
 
 	public Company getNextCompany(Company companyCurrent) {
 		int i = this.list.indexOf(companyCurrent);
-		if ((i - 1) < 0) {
-			return null;
+		int i_1 = i-1;
+		if ((i_1)  < 0) {
+			i_1=this.list.size()-1;
 		}
-		return this.list.get(i - 1);
+		
+		return this.list.get(i_1);
 	}
 
 	public List<Company> getCompaniesByName(String name) {

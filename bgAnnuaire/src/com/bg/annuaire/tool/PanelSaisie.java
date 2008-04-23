@@ -26,6 +26,8 @@ import com.bg.annuaire.tool.company.action.Action;
 import com.bg.annuaire.tool.company.action.ActionFactory;
 
 public class PanelSaisie extends JPanel {
+	
+	private JLabel labelNoAction = new JLabel("\n No \nActions \n");
 
 	private JTextField textFieldNAme = new JTextField(12);
 
@@ -98,12 +100,15 @@ public class PanelSaisie extends JPanel {
 		p.add(this.createPanel("Effectifs", this.textFieldEffectif));
 		p.add(this.createPanel("Adresse", this.textAreaAdresse));	
 		p.add(this.createPanel("Nouvelle Action", this.textAreaNewAction));
+		
+		panelListAction.add(this.labelNoAction);
+		panelListAction.setMinimumSize(new Dimension(180,180));
 		JScrollPane scrollPane = new JScrollPane(this.panelListAction);
 		
 		
 		JPanel pp = new JPanel(new BorderLayout());
-		pp.add(p,BorderLayout.CENTER);
-		pp.add(this.createPanel("actions", scrollPane),BorderLayout.SOUTH); 
+		pp.add(p,BorderLayout.NORTH);
+		pp.add(scrollPane,BorderLayout.CENTER); 
 
 		JButton buttonSave = new JButton("save");
 		buttonSave.addActionListener(new ActionListener() {
@@ -124,13 +129,16 @@ public class PanelSaisie extends JPanel {
 		p.add(panelSave);
 		this.add(pp, BorderLayout.CENTER);
 		this.add(panelNavigation, BorderLayout.NORTH);
+		this.initTextField();
 	}
 
 	private JPanel panelListAction = new JPanel(new GridLayout(0,4));
-	private Component getPanelActions___() {
+	
+	private Component getPanelActions___DEPRECATED() {
 		JPanel panelActions = new JPanel();
 		panelActions.setLayout(new BorderLayout());
 		panelActions.add(new JLabel("Actions:"), BorderLayout.WEST);
+		
 		
 		
 		panelActions.add(panelListAction,BorderLayout.CENTER);
@@ -264,7 +272,7 @@ public class PanelSaisie extends JPanel {
 	}
 
 	private void next() {
-		System.out.println("next");
+		System.out.println("PanelSaisie.next : CompanyCurrent::"+companyCurrent);
 		this.companyCurrent = CompanyFactory.getInstance().getNextCompany(this.companyCurrent);
 		this.update();
 	}
