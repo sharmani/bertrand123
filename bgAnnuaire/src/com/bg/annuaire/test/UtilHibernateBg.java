@@ -37,7 +37,7 @@ public class UtilHibernateBg {
 			annotationConfiguration.addAnnotatedClass(Action.class);
 			
 			sessionFactory = annotationConfiguration.buildSessionFactory();
-			logger.info("!UtilHibernateBg sessionFactory :::: "+sessionFactory);
+			logger.info("!UtilHibernateBg initHibernate sessionFactory :::: "+sessionFactory);
 		} catch (Throwable ex) {
 			logger.info("!UtilHibernateBg Zorg in th potage!");
 			//throw new ExceptionInInitializerError(ex);
