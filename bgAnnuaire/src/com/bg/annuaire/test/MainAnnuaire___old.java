@@ -8,9 +8,9 @@ import java.util.StringTokenizer;
 
 import javax.swing.DefaultCellEditor;
 
-public class MainAnnuaire {
+public class MainAnnuaire___old {
 
-	public MainAnnuaire() {
+	public MainAnnuaire___old() {
 		// TODO Auto-generated constructor stub
 		DefaultCellEditor d;
 	}

@@ -7,7 +7,6 @@ import java.util.StringTokenizer;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -15,8 +14,6 @@ import javax.persistence.Transient;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.bg.util2.GenerateurId;
 
 @Entity
 @Table(name = "Company2")
@@ -55,6 +52,8 @@ public class Company {
 	private String classification = "";
 
 	private int nbActions = 0;
+
+	private Boolean actionToDo = false;
 
 	private final static String tag_name = "name";
 
@@ -483,6 +482,20 @@ public class Company {
 
 	public void incrementNbActions() {
 		this.nbActions++;
+	}
+
+	
+
+	public Boolean getActionToDo() {
+		return actionToDo;
+	}
+
+	public void setActionToDo(Boolean actionToDo) {
+		if (actionToDo == null) {
+
+		} else {
+			this.actionToDo = actionToDo;
+		}
 	}
 
 }

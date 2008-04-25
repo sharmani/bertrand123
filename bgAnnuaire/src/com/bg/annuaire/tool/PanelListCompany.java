@@ -64,7 +64,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		this.listCompany = CompanyFactory.getInstance().getList();
 
 		Iterator<Company> ite = listCompany.iterator();
-		Object[][] oo = new Object[listCompany.size()][9];
+		Object[][] oo = new Object[listCompany.size()][11];
 		int i = 0;
 		while (ite.hasNext()) {
 			Company c = ite.next();
@@ -75,11 +75,13 @@ public class PanelListCompany extends JPanel implements ActionListener {
 			oo[i][1] = c.getName();
 			oo[i][2] = c.getSiret();
 			oo[i][3] = c.getNaf();
-			oo[i][4] = c.getTelephone();
-			oo[i][5] = c.getCodePostal();
-			oo[i][6] = c.getVille();
-			oo[i][7] = c.getEffectif();
-			oo[i][8] = ""+c.getNbActions();
+			oo[i][4] = c.getClassification();
+			oo[i][5] = c.getTelephone();
+			oo[i][6] = c.getCodePostal();
+			oo[i][7] = c.getVille();
+			oo[i][8] = c.getEffectif();
+			oo[i][9] = c.getActionToDo().booleanValue();
+			oo[i][10] = ""+c.getNbActions();
 			i++;
 		}
 		MyTableModel model = new MyTableModel(oo);
@@ -159,7 +161,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] columnNames = { "id", "Name", "Siret", "naf", "telephone", "codePostal", "Ville", "effectifs" ,"nbActions"};
+		private String[] columnNames = { "id", "Name", "Siret", "naf","classification", "telephone", "codePostal", "Ville", "effectifs" ,"todo","nbActions"};
 
 		private Object[][] data;
 
