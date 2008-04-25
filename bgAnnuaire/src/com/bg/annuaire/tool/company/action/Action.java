@@ -42,6 +42,7 @@ public class Action {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
 
 	public long getIdCompany() {
 		return idCompany;
