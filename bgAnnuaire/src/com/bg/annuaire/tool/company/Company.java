@@ -45,7 +45,7 @@ public class Company {
 
 	private String dateModification = "";
 
-	private String comment = "";
+	private String comment = "-";
 
 	private String contacts = "";
 
