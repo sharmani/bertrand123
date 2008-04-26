@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 public class MainTest {
 
@@ -21,7 +22,7 @@ public class MainTest {
 		String urlStr = "http://www.pagespro.com/recherche.php";
 		String s = "p_ORDRE=AfficheRes&p_ACTION=&a_PAGE=&a_TAG=&a_Etat=&a_avec_crit=&a_siren=&a_naf=&a_theme=&a_rai_soc=A2B&a_activ=&a_loc=Labege&a_geo=31";
 		// 
-		testPost(urlStr, s);
+		postAnnuairePro(urlStr, s);
 	}
 
 	private static void testPost(String urlStr, String a_rai_soc, String a_loc, String a_geo) throws Exception {
@@ -51,10 +52,10 @@ public class MainTest {
 			String value = p.getProperty(key);
 			params += "key=" + URLEncoder.encode(value);
 		}
-		testPost(urlStr, params);
+		postAnnuairePro(urlStr, params);
 	}
 
-	private static void testPost(String urlStr, String s) throws Exception {
+	private static void postAnnuairePro(String urlStr, String s) throws Exception {
 
 		URL url = new URL(urlStr);
 		URLConnection urlConnection = url.openConnection();
@@ -72,7 +73,49 @@ public class MainTest {
 		String decodedString;
 
 		while ((decodedString = in.readLine()) != null) {
-			System.out.println(decodedString);
+			// System.out.println(decodedString);
+			if (decodedString == null) {
+
+			} else if (decodedString.indexOf("name=\"resultat\"") > 0) {
+				//System.out.println(decodedString);
+				StringTokenizer st = new StringTokenizer(decodedString, " ");
+				while (st.hasMoreTokens()) {
+					String t = st.nextToken();
+					if (t.startsWith("src=")) {
+						System.out.println("---- " + t);
+						int i = t.indexOf("=");
+						String src =t.substring(i+2,t.length()-1);
+						System.out.println("---- src ::: " + src);
+						postAnnuairePro2(urlStr, src);
+					}
+				}
+			}
+		}
+		in.close();
+
+	}
+	
+	
+	private static void postAnnuairePro2(String urlStr, String s) throws Exception {
+
+		URL url = new URL(urlStr);
+		URLConnection urlConnection = url.openConnection();
+		HttpURLConnection httpUrlConnection = (HttpURLConnection) urlConnection;
+
+		httpUrlConnection.setDoOutput(true);
+		OutputStream oS = httpUrlConnection.getOutputStream();
+		OutputStreamWriter out = new OutputStreamWriter(oS);
+		out.write(s);
+		out.close();
+		InputStream iS = httpUrlConnection.getInputStream();
+		InputStreamReader iSR = new InputStreamReader(iS);
+		BufferedReader in = new BufferedReader(iSR);
+
+		String decodedString;
+
+		while ((decodedString = in.readLine()) != null) {
+			 System.out.println(decodedString);
+			
 		}
 		in.close();
 

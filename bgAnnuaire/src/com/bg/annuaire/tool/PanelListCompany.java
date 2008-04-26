@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,6 +28,10 @@ public class PanelListCompany extends JPanel implements ActionListener {
 
 	private JPanel panelGlobal = new JPanel();
 
+	private Hashtable<String, Boolean> hDisplayColumn = new Hashtable<String, Boolean>();
+
+	private Vector<String> vDisplayColumn = new Vector<String>();
+
 	private JTable table;
 
 	List<Company> listCompany;
@@ -35,7 +42,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 
 	public PanelListCompany() {
 		super();
-
+		initDisplayColumn();
 		buttonDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteCompany();
@@ -59,40 +66,122 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		initPanelGlobal();
 	}
 
+	private static String K_ID = "id";
+
+	private static String K_Name = "Name";
+
+	private static String K_SIRET = "Siret";
+
+	private static String K_Naf = "NAF";
+
+	private static String K_classification = "class";
+
+	private static String K_Telephone = "tel";
+
+	private static String K_CodePostal = "Code";
+
+	private static String K_Ville = "Ville";
+
+	private static String K_Effectif = "Effectif";
+
+	private static String K_ToDo = "ToDo";
+
+	private static String K_NbActions = "NbActions";
+
+	/**
+	 * 
+	 */
+	private void initDisplayColumn() {
+		hDisplayColumn.put(K_ID, true);
+		hDisplayColumn.put(K_Name, true);
+		hDisplayColumn.put(K_SIRET, false);
+		hDisplayColumn.put(K_Naf, false);
+		hDisplayColumn.put(K_classification, false);
+		hDisplayColumn.put(K_Telephone, true);
+		hDisplayColumn.put(K_CodePostal, true);
+		hDisplayColumn.put(K_Ville, true);
+		hDisplayColumn.put(K_Effectif, false);
+		hDisplayColumn.put(K_ToDo, true);
+		hDisplayColumn.put(K_NbActions, true);
+		//
+		vDisplayColumn.add(K_ID);
+		vDisplayColumn.add(K_Name);
+		vDisplayColumn.add(K_SIRET);
+		vDisplayColumn.add(K_Naf);
+		vDisplayColumn.add(K_classification);
+		vDisplayColumn.add(K_Telephone);
+		vDisplayColumn.add(K_CodePostal);
+		vDisplayColumn.add(K_Ville);
+		vDisplayColumn.add(K_Effectif);
+		vDisplayColumn.add(K_ToDo);
+		vDisplayColumn.add(K_NbActions);
+	}
+
 	private void initPanelGlobal() {
 		this.panelGlobal.removeAll();
 		this.listCompany = CompanyFactory.getInstance().getList();
 
 		Iterator<Company> ite = listCompany.iterator();
-		Object[][] oo = new Object[listCompany.size()][11];
+		Object[][] oo = new Object[listCompany.size()][getColumnNames().length];
 		int i = 0;
 		while (ite.hasNext()) {
 			Company c = ite.next();
-			JPanel p = new JPanel(new GridLayout(1, 0));
-			p.add(new JLabel(c.getName()));
-			p.add(new JLabel(c.getSiret()));
-			oo[i][0] = i;
-			oo[i][1] = c.getName();
-			oo[i][2] = c.getSiret();
-			oo[i][3] = c.getNaf();
-			oo[i][4] = c.getClassification();
-			oo[i][5] = c.getTelephone();
-			oo[i][6] = c.getCodePostal();
-			oo[i][7] = c.getVille();
-			oo[i][8] = c.getEffectif();
-			oo[i][9] = c.getActionToDo().booleanValue();
-			oo[i][10] = ""+c.getNbActions();
+			Enumeration<String> enu = vDisplayColumn.elements();
+			int j = 0;
+			while (enu.hasMoreElements()) {
+				String k = enu.nextElement();
+				Boolean b = hDisplayColumn.get(k);
+				if (b) {
+					Object v = "!NoObj!";
+
+					if (k == K_ID) {
+						v = c.getId();
+					} else if (k == K_Name) {
+						v = c.getName();
+					} else if (k == K_SIRET) {
+						v = c.getSiret();
+					} else if (k == K_Naf) {
+						v = c.getNaf();
+					} else if (k == K_classification) {
+						v = c.getClassification();
+					} else if (k == K_Telephone) {
+						v = c.getTelephone();
+					} else if (k == K_CodePostal) {
+						v = c.getCodePostal();
+					} else if (k == K_Ville) {
+						v = c.getVille();
+					} else if (k == K_Effectif) {
+						v = c.getEffectif();
+					} else if (k == K_ToDo) {
+						v = c.getActionToDo();
+					} else if (k == K_NbActions) {
+						v = "" + c.getNbActions();
+					}
+					if (b) {
+						oo[i][j] = v;
+						j++;
+					}
+				}
+			}
+			/*
+			 * oo[i][0] = i; oo[i][1] = c.getName(); oo[i][2] = c.getSiret();
+			 * oo[i][3] = c.getNaf(); oo[i][4] = c.getClassification(); oo[i][5] =
+			 * c.getTelephone(); oo[i][6] = c.getCodePostal(); oo[i][7] =
+			 * c.getVille(); oo[i][8] = c.getEffectif(); oo[i][9] =
+			 * c.getActionToDo().booleanValue(); oo[i][10] =
+			 * ""+c.getNbActions();
+			 */
 			i++;
 		}
 		MyTableModel model = new MyTableModel(oo);
 		this.table = new JTable(model);
-		////
+		// //
 		TableColumnModel tcm = table.getColumnModel();
 		TableColumn tc = tcm.getColumn(0);
 		TableCellRender_Button cell_button = new TableCellRender_Button(this);
 		tc.setCellRenderer(cell_button);
 		tc.setCellEditor(cell_button);
-		////
+		// //
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
@@ -128,7 +217,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 
 	private void editCompany() {
 		int i = table.getSelectedRow();
-		System.out.println("EditCompany  selecteRow:"+i);
+		System.out.println("EditCompany  selecteRow:" + i);
 		int ii = table.convertRowIndexToModel(i);
 
 		Company c = this.listCompany.get(ii);
@@ -148,9 +237,40 @@ public class PanelListCompany extends JPanel implements ActionListener {
 			Long id = Long.parseLong(command.trim());
 			ToolAnuaireGui.getInstance().displayDetail(id);
 		} catch (Exception e1) {
-			ToolAnuaireGui.getInstance().log("Exception "+e1.getMessage());
+			ToolAnuaireGui.getInstance().log("Exception " + e1.getMessage());
 			e1.printStackTrace();
 		}
+	}
+
+	private int getNombreDeColumns() {
+		Enumeration<String> enu = this.hDisplayColumn.keys();
+		int i = 0;
+		while (enu.hasMoreElements()) {
+			String key = enu.nextElement();
+			Boolean value = this.hDisplayColumn.get(key);
+			if (value) {
+				i++;
+			}
+		}
+		return i;
+	}
+
+	private String[] getColumnNames() {
+		// String[] columnNames = { "id", "Name", "Siret",
+		// "naf","classification", "telephone", "codePostal", "Ville",
+		// "effectifs" ,"todo","nbActions"};
+		String[] columnNames = new String[getNombreDeColumns()];
+		Enumeration<String> enu = this.vDisplayColumn.elements();
+		int i = 0;
+		while (enu.hasMoreElements()) {
+			String key = enu.nextElement();
+			Boolean value = this.hDisplayColumn.get(key);
+			if (value) {
+				columnNames[i] = key;
+				i++;
+			}
+		}
+		return columnNames;
 	}
 
 	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -161,11 +281,12 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String[] columnNames = { "id", "Name", "Siret", "naf","classification", "telephone", "codePostal", "Ville", "effectifs" ,"todo","nbActions"};
+		private String[] columnNames;
 
 		private Object[][] data;
 
 		public MyTableModel(Object[][] data_) {
+			this.columnNames = getColumnNames();
 			this.data = data_;
 		}
 
@@ -207,7 +328,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		 * change.
 		 */
 		public void setValueAt(Object value, int row, int col) {
-			if (col==0){
+			if (col == 0) {
 				return;
 			}
 			data[row][col] = value;
@@ -215,7 +336,5 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		}
 
 	}
-
-	
 
 }
