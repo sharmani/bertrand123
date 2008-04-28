@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+  <managed-bean>
+    <managed-bean-name>beanInfos</managed-bean-name>
+    <managed-bean-class>bg.imc.web.BeanInfos</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+ 
+  <navigation-rule>
+  
+    <from-view-id>*</from-view-id>
+    
+    <navigation-case>
+      <from-outcome>doTest</from-outcome>
+      <to-view-id>/test.jsp</to-view-id>
+    </navigation-case>  
+     <navigation-case>
+      <from-outcome>doInscription</from-outcome>
+      <to-view-id>/inscriptionLanding.jsp</to-view-id>
+    </navigation-case>  
+    
+    <navigation-case>
+      <from-outcome>*</from-outcome>
+      <to-view-id>/welcome.jsp</to-view-id>
+    </navigation-case>
+    
+  </navigation-rule>
+ 
+</faces-config>

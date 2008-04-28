@@ -1,0 +1,19 @@
+div.frame_ad {
+		width:210px;
+		border: 1px solid #0000ff;
+		color:#000000;
+		background-color: #ffffff;
+		margin-top:20px;
+		margin-left:30px;
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+	
+	 div.tittle_ad{
+		color:#0000ff;
+		text-decoration:underline;
+	 }
+	 
+	 div.link_ad{
+		color:#00ff00;
+	 }

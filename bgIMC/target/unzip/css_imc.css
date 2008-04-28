@@ -1,0 +1,154 @@
+
+
+body {
+	color:#000000;
+	background-color: #ffffff;
+	font-family:  Arial, sans-serif;
+	margin-left: auto;
+    margin-right: auto;
+
+}
+
+tr.m {
+	padding-bottom: 0px;
+	padding-top: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+	border: 0px solid #ff0000;
+	top:0px;	
+}
+
+td.m{
+	padding-bottom: 0px;
+	padding-top: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+	top:0px;
+	bottom:0px;
+	border: 0px solid #ff0000;
+}
+
+
+
+div.myBandeau{
+	position:relative;
+	font-size:12px;
+	margin-left: auto;
+    margin-right: auto;
+	width:800px;
+	clear:both;
+	border: 2px solid #c9c9c9;	
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	font-family:  sans-serif;
+}
+
+div.menu{
+	width:800px;
+	height:30px;
+	border: 0px solid #000000;	
+	margin-left: auto;
+    margin-right: auto;	
+}
+
+div.menu_button {
+	display:block;
+	color:#ffffff;
+	position:relative;
+	float:left;
+	width:19%;
+	height:20px;
+	margin-left: 1px;
+	margin-right: 1px;
+	text-align: center;
+	border: 1px solid #ffffff;	
+	font-family: Helvetica, Calibri, Arial, sans-serif;
+	text-decoration: none;
+	font-weight: bold;
+	background-color: #99cbff;
+	background-image: url(images/fond_button.jpg); 
+
+}
+
+
+
+div.menu_button  a:link , div.menu_button a:visited{
+	color:#ffffff; 
+	text-decoration: none;
+}
+
+div.menu_button a:hover, div.menu_button a:active{ 
+    color:red; 
+    text-decoration:none;
+	font-weight: bold;
+ }
+
+
+
+div.myCorps{
+	position:relative;
+	font-size:10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	margin-top: 20px;
+	margin-left:0px;
+    margin-right:20px;
+    width:100%;
+	clear:both;
+	border:2px solid #c9c9c9;	
+}
+
+div.textCorps{
+	color:#000000;
+	font-size:16px;
+	margin-top: 20px;
+	border: 0px solid #000000;	
+}
+
+div.label {
+    width:100%;
+	left:20px;
+	top:10px;
+	margin-top:12px;
+	margin-bottom:8px;
+	padding-left:10px;
+	font-size:30px;
+	color:#ffffff;
+	background-color:#6180bd;
+}
+
+td.button {
+	width:12%;
+	border: 0px solid #0000ff;	
+	text-align: center;
+}
+
+a.button2 {
+	border: 0px solid #ff0000;
+	text-align: center;
+	display: block;
+	color:#000000; 
+	text-decoration: none;
+	font-weight: bold;	
+	font-size:16px;
+}
+
+a.button2  :link , a.button2 :visited{
+	color:#000000; 
+	text-decoration: none;
+	font-weight: bold;	
+}
+a.button2:hover, a.button2 :visited:hover{
+    background-color:#6699c8;
+	color:#ffffff; 
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+
+
+
+
+

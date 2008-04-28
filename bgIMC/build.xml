@@ -1,0 +1,42 @@
+<project name="test" default="deployLocal">
+
+	 <property name="targetdir" value="${basedir}/target"/>
+	 <property name="war" value="${targetdir}/bgIMC.war"/>
+	 <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask"/>
+	 <taskdef name="list"    classname="org.apache.catalina.ant.ListTask"/>
+	 <taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask"/>
+	 <taskdef name="remove"  classname="org.apache.catalina.ant.RemoveTask"/>     
+		    
+		    
+	<tstamp>
+		      <format property="touch.time" pattern="yyyy_MM_dd_hh_mm"/>
+	</tstamp>
+
+
+    <target name="makeWar" description="make war bgIMC">
+    	<delete dir="target"/>
+    	<mkdir dir="target"/>
+    	<mkdir dir="target/unzip"/>
+    			
+    	<war destfile="${war}">
+    	  <fileset dir="src/main/webapp"/>    	  
+    	</war>
+    	
+    	<unzip src="${war}" dest="target/unzip"/>
+    </target>
+   
+	
+	
+	 <target name="deployLocal" description="Deploy Local">
+				  	<echo message="${war}"/>
+				    <deploy url="http://localhost:8080/manager" username="shubaka" password="shubaka"  path="/bg_test_ejb_war" war="${war}" update="true" />
+				  	<echo message="${war} deployed"/>
+	 </target>
+	
+	 <target name="deployDedibox" description="Deploy Local">
+				  	<echo message="${war}"/>
+				    <deploy url="http://formation-pub-adwords.imc-sf.fr/manager" username="shubaka" password="shubaka"  path="/" war="${war}" update="true" />
+				  	<echo message="${war} deployed"/>
+	 </target>
+	
+</project>
