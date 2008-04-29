@@ -178,9 +178,9 @@ public class PanelListCompany extends JPanel implements ActionListener {
 		// //
 		TableColumnModel tcm = table.getColumnModel();
 		TableColumn tc = tcm.getColumn(0);
-		TableCellRender_Button cell_button = new TableCellRender_Button(this);
-		tc.setCellRenderer(cell_button);
-		tc.setCellEditor(cell_button);
+		//TableCellRender_Button cell_button = new TableCellRender_Button(this);
+		//tc.setCellRenderer(cell_button);
+		//tc.setCellEditor(cell_button);
 		// //
 		table.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(table);
