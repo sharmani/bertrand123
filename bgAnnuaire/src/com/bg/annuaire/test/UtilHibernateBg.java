@@ -19,13 +19,17 @@ public class UtilHibernateBg {
 
 	private static UtilHibernateBg instance;
 
-	public void initHibernate(String userName, String password) {
+	public void initHibernate(String userName, String password, String bdd, String ip) {
 		try {
 			System.out.println("------------ UtilHibernateBg  static start "+userName+"  "+password);
 			AnnotationConfiguration annotationConfiguration = new AnnotationConfiguration();
 			annotationConfiguration .configure("hibernate.cfg.xml");
 			annotationConfiguration.setProperty("hibernate.connection.username", userName);
 			annotationConfiguration.setProperty("hibernate.connection.password", password);
+			//String url= "dbc:mysql://88.191.37.65/annuaire_pro?user="+userName;
+			String url= "jdbc:mysql://"+ip+"/"+bdd+"?user="+userName;
+			System.out.println(" url :: "+url);
+			annotationConfiguration.setProperty("hibernate.connection.url", url);
 			String packageName ;
 			packageName = Company.class.getPackage().getName();
 			System.out.println("------------ UtilHibernateBg  static start packageName: "+packageName);

@@ -92,7 +92,7 @@ public class PanelListCompany extends JPanel implements ActionListener {
 	 * 
 	 */
 	private void initDisplayColumn() {
-		hDisplayColumn.put(K_ID, true);
+		hDisplayColumn.put(K_ID, false);
 		hDisplayColumn.put(K_Name, true);
 		hDisplayColumn.put(K_SIRET, false);
 		hDisplayColumn.put(K_Naf, false);

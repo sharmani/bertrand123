@@ -10,7 +10,7 @@
 		
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://88.191.37.65/annuaire_pro?user=shubaka</property>
+        <!-- property name="connection.url">jdbc:mysql://88.191.37.65/annuaire_pro?user=shubaka</property -->
         <!--   property name="connection.username">beber</property -->
         <!--  property name="connection.password">blabala</property  -->
         <property name="hibernate.connection.useUnicode">true</property>
