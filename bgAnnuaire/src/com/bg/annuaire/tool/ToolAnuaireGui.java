@@ -177,6 +177,13 @@ public class ToolAnuaireGui {
 				updateFromBdd();
 			}
 		});
+		
+		JMenuItem menuAdwords = new JMenuItem("adwords");
+		menuAdwords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addWords();
+			}
+		});
 		menuBar.add(menuFile);
 		menuBar.add(menuSaisieDetail);
 		menuBar.add(menuSaisieAnnuairePro);
@@ -187,6 +194,7 @@ public class ToolAnuaireGui {
 		menuBar.add(menuCleanBdd);
 		menuBar.add(menuCommit);
 		menuBar.add(menuUpdateFromBdd);
+		menuBar.add(menuAdwords);
 		menuBar.add(menuItemConnectBdd);
 		frame.setJMenuBar(menuBar);
 		JPanel panelGlobal2 = new JPanel(new BorderLayout());
@@ -197,6 +205,10 @@ public class ToolAnuaireGui {
 		frame.pack();
 		frame.setVisible(true);
 		initSaveFileChooser();
+	}
+
+	protected void addWords() {
+		System.out.println("Adwords");
 	}
 
 	protected void connectBdd() {
