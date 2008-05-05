@@ -17,6 +17,7 @@ public class MainTool {
 		//iniHibernateOld("hibernate.cfg.xml");
 		UtilHibernateBg.getInstance();
 		UtilSpring.getInstance().initSpringConfig();
+		//UtilSpring.getInstance().preInstantiateSingletons();
 		new ToolAnuaireGui();
 	}
 	

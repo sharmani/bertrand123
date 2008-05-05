@@ -31,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.springframework.beans.factory.BeanFactory;
+
 import com.bg.annuaire.test.UtilHibernateBg;
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
@@ -344,12 +346,15 @@ public class PanelAdwords extends JPanel {
 		String text = this.textAreaMAil.getText();
 		String from = this.textAreaFrom.getText();
 		this.textAreaLog.setText("sendMAilTest \n");
-		this.sendMail(to, object, text, from);
+		this.sendMail(to, object, text, from, "http://bertrand.guiral.free.fr");
 	}
 
-	private void sendMail(String to, String subject, String text, String from) {
+	private void sendMail(String to, String subject, String text, String from, String dollard_1) {
+		text = text.replace("$1", dollard_1);
 		this.textAreaLog.append("sendMAilTest to : "+to+"  subject : "+subject+" text.length : "+text.length()+"\n");
-		ClientSmtp.getInstance().sendMessageHtml(to, subject, text, from);
+		ClientSmtp clientSmtp = this.getClientSmtp();
+		//clientSmtp.sendMessageHtml(to, subject+" ", text, from);
+		clientSmtp.sendMessage(to, subject+" ", text, from);
 		System.out.println("sendMAil to:"+to+" object: "+subject+"  from: "+from);
 	}
 
@@ -376,6 +381,12 @@ public class PanelAdwords extends JPanel {
 		System.out.println("showCard : ------------------- : " + k);
 		this.labelCommand.setText(k);
 		cardLayoutPanelCenter.show(panelCenter, k);
+	}
+	
+	private ClientSmtp getClientSmtp(){
+		BeanFactory beanFactory = UtilSpring.getInstance().getBeanFactory();
+		Object o = beanFactory.getBean("smtp");
+		return (ClientSmtp) o;
 	}
 
 }
