@@ -2,6 +2,7 @@ package com.bg.annuaire.tool;
 //com.bg.annuaire.tool.ToolAnuaireGui
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -213,6 +214,7 @@ public class ToolAnuaireGui {
 		frame.pack();
 		frame.setVisible(true);
 		initSaveFileChooser();
+		textFieldInfos.setBackground(Color.blue);
 	}
 
 	protected void addWords() {
