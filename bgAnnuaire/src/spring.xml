@@ -13,7 +13,7 @@
 			<value>smtp.wanadoo.fr</value>
 		</property>
 		<property name="from">
-			<value>adwords@java-consultant.com</value>
+			<value>formation-adwords@java-consultant.com</value>
 		</property>
 		<property name="user">
 			<value>bertrandguiral</value>
@@ -23,7 +23,7 @@
 		</property>
 
 		<property name="sendMessageOnActivation">
-			<value>true</value>
+			<value>false</value>
 		</property>
 
 		<property name="destinaireActivationMessage">
