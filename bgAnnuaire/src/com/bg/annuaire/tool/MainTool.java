@@ -5,6 +5,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import com.bg.annuaire.test.UtilHibernateBg;
+import com.bg.util2.spring.UtilSpring;
 
 public class MainTool {
 
@@ -15,6 +16,7 @@ public class MainTool {
 		BasicConfigurator.configure();//log4j
 		//iniHibernateOld("hibernate.cfg.xml");
 		UtilHibernateBg.getInstance();
+		UtilSpring.getInstance().initSpringConfig();
 		new ToolAnuaireGui();
 	}
 	
