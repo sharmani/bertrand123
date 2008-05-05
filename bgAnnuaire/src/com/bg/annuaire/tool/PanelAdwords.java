@@ -13,9 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+
+
 import com.bg.annuaire.test.UtilHibernateBg;
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
+import com.bg.util2.email.smtp.ClientSmtp;
+import com.bg.util2.spring.UtilSpring;
 
 
 public class PanelAdwords extends JPanel {
@@ -46,6 +50,10 @@ public class PanelAdwords extends JPanel {
 	
 	private void startProcess() {
 		System.out.println("Adwords Start Process");
+		Object o1 = UtilSpring.getInstance().getBeanFactory().getBean("smtp");
+		ClientSmtp clientSmtp = (ClientSmtp)o1;
+		System.out.println("Adwords Start Process clientSmtp:"+clientSmtp);
+		
 		List<Company> l = CompanyFactory.getInstance().getList();
 		int i=0;
 		for(Company c:l){
