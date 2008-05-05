@@ -1,6 +1,7 @@
 package com.bg.annuaire.tool;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -15,8 +16,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,15 +38,33 @@ import com.bg.util2.email.smtp.ClientSmtp;
 import com.bg.util2.spring.UtilSpring;
 
 public class PanelAdwords extends JPanel {
+	
+	private static final String P_LOG="log";
+	private static final String P_OBJECT="object";
+	private static final String P_MAIL_TEST="mailTest";
+	private static final String P_MAIL="mail";
+	private static final String P_HELP="help";
 
+	private CardLayout cardLayoutPanelCenter = new CardLayout(); 
+	private JPanel panelCenter ;
+	
 	private JButton buttonSendMail = new JButton("SendMail");
 
-	private JTextArea textArea = new JTextArea(20, 120);
+	private JLabel labelCommand = new JLabel("");
+	
+	private JTextArea textAreaLog = new JTextArea("Log",20, 120);
+	private JTextArea textAreaObject = new JTextArea("object",20, 120);
+	private JTextArea textAreaMAilTest = new JTextArea("MAilTest",20, 120);
+	private JTextArea textAreaMAil = new JTextArea("MAil",20, 120);
+	private JTextArea textAreaHelp = new JTextArea("Help",20, 120);
 
 	private File fileTemp = null;
+	private File fileSauvegarde = new File("saveMail");
 
 	private JCheckBox checkBox = new JCheckBox("Armed");
 
+	
+	
 	public PanelAdwords() {
 		super();
 		this.setLayout(new BorderLayout());
@@ -55,6 +76,7 @@ public class PanelAdwords extends JPanel {
 		});
 		
 		JButton buttonEditMail = new JButton("Edit Mail");
+		buttonEditMail.setToolTipText("Edit le corps du mail");
 		buttonEditMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editMail();
@@ -63,6 +85,7 @@ public class PanelAdwords extends JPanel {
  
 		
 		JButton buttonEditObject = new JButton("Edit Object");
+		buttonEditObject.setToolTipText("L'objet du mail");
 		buttonEditObject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				editObject();
@@ -70,7 +93,8 @@ public class PanelAdwords extends JPanel {
 		});
 		
 		JButton buttonSendEditAdresseTest = new JButton("@ Test");
-		buttonSendEditAdresseTest.addActionListener(new ActionListener() {
+		buttonSendEditAdresseTest.setToolTipText("Adresse d'un email de test");
+		buttonSendEditAdresseTest.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
 				sendEditMailTest();
 			}
@@ -78,6 +102,7 @@ public class PanelAdwords extends JPanel {
 
 		
 		JButton buttonSendMAilTest = new JButton("Test");
+		buttonSendMAilTest.setToolTipText("Envoi d'un email de test");
 		buttonSendMAilTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sendMailTest();
@@ -85,17 +110,37 @@ public class PanelAdwords extends JPanel {
 		});
 		
 		JButton buttonDisplayHelp = new JButton("Help");
+		buttonSendMAilTest.setToolTipText("Affiche un help");
 		buttonDisplayHelp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				displayHelp();
 			}
 		});
+		
+		JButton buttonLog = new JButton("log");
+		buttonLog.setToolTipText("Montrer les logs");
+		buttonLog.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displayLog();
+			}
+		});
+		
+		JButton buttonSave = new JButton("save");
+		buttonSave.setToolTipText("Démarrer le process");
+		buttonSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
+		
 		JButton buttonStart = new JButton("startProcess");
+		buttonStart.setToolTipText("Démarrer le process");
 		buttonStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				startProcess();
 			}
 		});
+		
 		JPanel panelT = new JPanel();
 		panelT.setLayout(new BoxLayout(panelT, BoxLayout.Y_AXIS));
 		panelT.add(new JLabel(""));
@@ -114,6 +159,10 @@ public class PanelAdwords extends JPanel {
 		panelT.add(buttonSendEditAdresseTest);
 		panelT.add(new JLabel(" "));
 		panelT.add(buttonSendMAilTest);
+		panelT.add(new JLabel(" "));
+		panelT.add(buttonLog);
+		panelT.add(new JLabel(" "));
+		panelT.add(buttonSave);
 		// JPanel panelButton = new JPanel();
 		// panelButton.add(panelT);
 		// Dimension dim = new Dimension(100,100);
@@ -121,16 +170,59 @@ public class PanelAdwords extends JPanel {
 		JPanel pTextArea = new JPanel(new GridLayout(1, 1));
 		pTextArea.setBackground(Color.GREEN);
 		// this.textArea.setPreferredSize(dim);
-		JScrollPane scollPAneTextArea = new JScrollPane(this.textArea);
-		pTextArea.add(scollPAneTextArea);
-		this.add(panelT, BorderLayout.WEST);
-		this.add(pTextArea, BorderLayout.CENTER);
+		JScrollPane scollPAneTextAreaLog = new JScrollPane(this.textAreaLog);
+		pTextArea.add(scollPAneTextAreaLog);
+		panelCenter = new JPanel(this.cardLayoutPanelCenter);		
+		panelCenter.add(pTextArea, P_LOG);
+		panelCenter.add(textAreaMAil, P_MAIL);
+		panelCenter.add(textAreaMAilTest, P_MAIL_TEST);
+		panelCenter.add(textAreaObject, P_OBJECT);
+		panelCenter.add(textAreaMAil, P_MAIL);
+		panelCenter.add(textAreaHelp, P_HELP);
+		JPanel panelCenter2 = new JPanel(new BorderLayout());
+		this.labelCommand.setBackground(Color.BLUE);
+		this.labelCommand.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
+		panelCenter2.add(this.labelCommand,BorderLayout.NORTH);
+		panelCenter2.add(panelCenter,BorderLayout.CENTER);
+		//add(panelCenter, BorderLayout.CENTER);
+		this.add(panelT, BorderLayout.WEST);		
+		this.add(panelCenter2, BorderLayout.CENTER);
+		this.showCard(P_LOG);
 		this.updateUI();
 	}
 
 	
+	private static String K_adress_mail_test="addressMailTest";
+	private static String K_Objectt="object";
+	private static String K_Mail="mail";
+	
+	protected void save() {
+		try {
+			this.showCard(P_LOG);
+			this.textAreaLog.setText("save");
+			Properties p = new Properties();
+			p.setProperty(K_adress_mail_test, this.textAreaMAilTest.getText());
+			p.setProperty(K_Objectt, this.textAreaObject.getText());
+			p.setProperty(K_Mail, this.textAreaMAil.getText());
+			FileWriter fw = new FileWriter(fileSauvegarde);
+			p.store(fw, "");
+			fw.close();
+			this.textAreaLog.setText("save done");			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	protected void displayLog() {
+		this.showCard(P_LOG);
+	}
+
+
 
 	protected void displayHelp() {
+		this.showCard(P_HELP);
 		String help = "HELP\n";
 		help += "Start examine la liste des société et génère le fichier  temporaire\n";
 		help += "SendMAil Envoie pour chaque email le texte\n";
@@ -138,7 +230,7 @@ public class PanelAdwords extends JPanel {
 		help += "ShowObject Edite l'objet\n";
 		help += "SendMAilTest Envoi un mail de test\n";
 		help += "AdressTest edite l'adresse de test\n";
-		this.textArea.setText(help);
+		this.textAreaHelp.setText(help);
 	}
 
 	private void startProcess() {
@@ -170,7 +262,7 @@ public class PanelAdwords extends JPanel {
 			} else if (c.getEMail().length() == 0) {
 
 			} else {
-				textArea.append(i + "  | name:" + c.getName() + "  | site: " + c.getSite() + " | mail: " + c.getEMail() + " \n");
+				textAreaLog.append(i + "  | name:" + c.getName() + "  | site: " + c.getSite() + " | mail: " + c.getEMail() + " \n");
 				ps.println(i + ";" + c.getName() + ";" + c.getSite() + ";" + c.getEMail());
 				System.out.println("process:: " + i + "  :: " + c.getName() + "  " + c.getSite() + "  " + c.getEMail());
 				i++;
@@ -202,20 +294,28 @@ public class PanelAdwords extends JPanel {
 
 	private void sendMailTest() {
 		System.out.println("SendMailTest");
+		this.showCard( P_LOG);
 	}
 	
 	private void sendEditMailTest(){
 		System.out.println("Edit MailTest");
+		this.showCard( P_MAIL_TEST);
 	}
 	
 	protected void editObject() {
 		System.out.println("editObject");
-		
+		this.showCard( P_OBJECT);
 	}
 
 	protected void editMail() {
 		System.out.println("editMail");
-		
+		this.showCard( P_MAIL);
+	}
+	
+	private void showCard(String k){
+		System.out.println("showCard : ------------------- : "+k);
+		this.labelCommand.setText(k);
+		cardLayoutPanelCenter.show(panelCenter, k);
 	}
 
 
