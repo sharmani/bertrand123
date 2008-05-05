@@ -1,5 +1,5 @@
 package com.bg.annuaire.tool;
-
+//com.bg.annuaire.tool.ToolAnuaireGui
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -33,6 +33,8 @@ public class ToolAnuaireGui {
 
 	final static String CHOICE_LIST_COMPANIES = "list";
 
+	final static String CHOICE_ADWORDS = "Adwords";
+
 	final static String CHOICE_LOGIN = "login";
 
 	private File fCurrentDirectory = new File(".");
@@ -45,6 +47,8 @@ public class ToolAnuaireGui {
 
 	private PanelSaisieAnnuaireSicoval panelSaisieSicoval = new PanelSaisieAnnuaireSicoval();
 
+	private PanelAdwords panelAdwords = new PanelAdwords();
+
 	private PanelListCompany panelListCompanies = new PanelListCompany();
 
 	private PanelLogin panelLogin = new PanelLogin();
@@ -54,13 +58,16 @@ public class ToolAnuaireGui {
 	private JFrame frame = new JFrame();
 
 	private JTextField textFieldInfos = new JTextField();
-	
+
 	private JFileChooser fileChooser = new JFileChooser(fCurrentDirectory);
+
 	private FileFilterBg filterXml = new FileFilterBg("xml");
-	private FileFilterBg filterExcel = new FileFilterBg("CSV","Excell CSV");
+
+	private FileFilterBg filterExcel = new FileFilterBg("CSV", "Excell CSV");
+
 	private FileFilterBg filterHtml = new FileFilterBg("html");
-	
-	private String login ="default";
+
+	private String login = "default";
 
 	public String getLogin() {
 		return login;
@@ -101,6 +108,7 @@ public class ToolAnuaireGui {
 		panelGlobal.add(panelSaisieAnnuairePro, CHOICE_PANEL_PRO);
 		panelGlobal.add(panelSaisieSicoval, CHOICE_PANEL_SICOVAL);
 		panelGlobal.add(panelListCompanies, CHOICE_LIST_COMPANIES);
+		panelGlobal.add(panelAdwords, CHOICE_ADWORDS);
 		JMenuBar menuBar = new JMenuBar();
 		JMenuItem menuItemToExcel = new JMenuItem("to Excel");
 		menuItemToExcel.addActionListener(new ActionListener() {
@@ -177,7 +185,7 @@ public class ToolAnuaireGui {
 				updateFromBdd();
 			}
 		});
-		
+
 		JMenuItem menuAdwords = new JMenuItem("adwords");
 		menuAdwords.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -209,13 +217,14 @@ public class ToolAnuaireGui {
 
 	protected void addWords() {
 		System.out.println("Adwords");
+		CardLayout cl = (CardLayout) (this.panelGlobal.getLayout());
+		cl.show(panelGlobal, CHOICE_ADWORDS);
 	}
 
 	protected void connectBdd() {
 		System.out.println("connectBdd");
 		this.displayLogin();
 	}
-
 
 	private void toHtml() {
 		CompanyFactory.getInstance().toHtml();
@@ -266,7 +275,7 @@ public class ToolAnuaireGui {
 	}
 
 	public void displayDetailForValidation(Company c) {
-		
+
 		this.panelSaisie.setCompanyCurrent(c);
 		this.panelSaisie.displayCompany(c);
 		this.displaySaisieDetail();
@@ -314,10 +323,10 @@ public class ToolAnuaireGui {
 			e.printStackTrace();
 		}
 	}
-		
+
 	private void save() {
 		int returnVal = fileChooser.showSaveDialog(this.frame);
-		//int returnVal = fileChooser.showOpenDialog(this.frame);
+		// int returnVal = fileChooser.showOpenDialog(this.frame);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			System.out.println("DileSelected: " + file + "  exists: " + file.exists());
@@ -335,9 +344,8 @@ public class ToolAnuaireGui {
 		}
 
 	}
-	
-	
-	private void  initSaveFileChooser(){
+
+	private void initSaveFileChooser() {
 		long time0 = System.currentTimeMillis();
 		System.out.println("save processing .");
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -346,12 +354,12 @@ public class ToolAnuaireGui {
 
 		String fileName = "bddAnuaire." + filterExcel.getExtension();
 		File fSelected = new File(fCurrentDirectory, fileName);
-		System.out.println(" fc.getSelectedFile  AA:"+fileChooser.getSelectedFile());
+		System.out.println(" fc.getSelectedFile  AA:" + fileChooser.getSelectedFile());
 		fileChooser.setDialogTitle("Save ");
 		fileChooser.setName("nameZoooooorg");
 		long time2 = System.currentTimeMillis();
 		fileChooser.setMultiSelectionEnabled(false);
-		System.out.println("save processing ..." + (time2 - time1) + " ms "+fileChooser.getSelectedFile());
+		System.out.println("save processing ..." + (time2 - time1) + " ms " + fileChooser.getSelectedFile());
 
 		fileChooser.addChoosableFileFilter(filterXml);
 		fileChooser.addChoosableFileFilter(filterHtml);
@@ -359,33 +367,33 @@ public class ToolAnuaireGui {
 
 		long time3 = System.currentTimeMillis();
 		fileChooser.setSelectedFile(fSelected);
-		
-		System.out.println("save processing .... " + (time3 - time2) + " ms   "+fileChooser.getSelectedFile());
+
+		System.out.println("save processing .... " + (time3 - time2) + " ms   " + fileChooser.getSelectedFile());
 		fileChooser.addPropertyChangeListener(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				System.out.println("FileChanged "+evt.getOldValue()+"  "+evt.getNewValue()+"  "+evt.getSource().getClass());
-				if (evt.getNewValue()== null){
-					if (evt.getOldValue()!= null){
-						JFileChooser fc = (JFileChooser)evt.getSource();
+				System.out.println("FileChanged " + evt.getOldValue() + "  " + evt.getNewValue() + "  " + evt.getSource().getClass());
+				if (evt.getNewValue() == null) {
+					if (evt.getOldValue() != null) {
+						JFileChooser fc = (JFileChooser) evt.getSource();
 						File fOld = (File) evt.getOldValue();
 						File dir = fc.getCurrentDirectory();
 						File f = new File(dir, fOld.getName());
 						fc.setSelectedFile(f);
-						//File fNew = new File(fc.getS)
+						// File fNew = new File(fc.getS)
 					}
 				}
 			}
 		});
-			
+
 		fileChooser.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				FileFilterBg ff = (FileFilterBg) evt.getNewValue();				
+				FileFilterBg ff = (FileFilterBg) evt.getNewValue();
 				ff.changeExtensionFileSelected(fileChooser);
 			}
 		});
-		
+
 	}
 
 	public void displayDetail(Long idCompany) {
