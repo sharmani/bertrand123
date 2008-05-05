@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<bean id="smtp" class="com.bg.util2.email.smtp.ClientSmtp"
+		scope="singleton" init-method="activate">
+
+		<property name="debug">
+			<value>true</value>
+		</property>
+		<property name="host">
+			<value>smtp.wanadoo.fr</value>
+		</property>
+		<property name="from">
+			<value>adwords@java-consultant.com</value>
+		</property>
+		<property name="user">
+			<value>bertrandguiral</value>
+		</property>
+		<property name="password">
+			<value>qh9vka4</value>
+		</property>
+
+		<property name="sendMessageOnActivation">
+			<value>true</value>
+		</property>
+
+		<property name="destinaireActivationMessage">
+			<value>guiral.bertrand@free.fr</value>
+		</property>
+
+		<property name="subjectActivationMessage">
+			<value>CLIENT SMTP Test SPRING</value>
+		</property>
+
+	</bean>
+
+</beans>
