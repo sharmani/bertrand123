@@ -3,14 +3,11 @@ package com.bg.annuaire.tool;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,17 +20,13 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import org.springframework.beans.factory.BeanFactory;
 
-import com.bg.annuaire.test.UtilHibernateBg;
 import com.bg.annuaire.tool.company.Company;
 import com.bg.annuaire.tool.company.CompanyFactory;
 import com.bg.util2.email.smtp.ClientSmtp;
@@ -50,6 +43,7 @@ public class PanelAdwords extends JPanel {
 	private static final String P_MAIL = "mail";
 
 	private static final String P_HELP = "help";
+
 	private static final String P_FROM = "from";
 
 	private static final String K_From = "from";
@@ -69,7 +63,7 @@ public class PanelAdwords extends JPanel {
 	private JTextArea textAreaMAilTest = new JTextArea("MAilTest", 20, 120);
 
 	private JTextArea textAreaMAil = new JTextArea("MAil", 20, 120);
-	
+
 	private JTextArea textAreaFrom = new JTextArea("From", 20, 120);
 
 	private JTextArea textAreaHelp = new JTextArea("Help", 20, 120);
@@ -216,8 +210,6 @@ public class PanelAdwords extends JPanel {
 		this.initFromFile();
 	}
 
-	
-
 	private static String K_adress_mail_test = "addressMailTest";
 
 	private static String K_Objectt = "object";
@@ -257,7 +249,7 @@ public class PanelAdwords extends JPanel {
 			this.textAreaObject.setText(p.getProperty(K_Objectt, ""));
 			this.textAreaMAil.setText(p.getProperty(K_Mail, ""));
 			this.textAreaFrom.setText(p.getProperty(K_From, "adwords@java-consultant.com"));
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			this.textAreaLog.append("" + e);
 			e.printStackTrace();
 		}
@@ -320,7 +312,7 @@ public class PanelAdwords extends JPanel {
 	private void sendMail() {
 		try {
 			buttonSendMail.setEnabled(false);
-			System.out.println("SendMail");
+			System.out.println("SendMail Adword");
 			FileReader fr = new FileReader(this.fileTemp);
 			BufferedReader br = new BufferedReader(fr);
 			String line;
@@ -329,11 +321,17 @@ public class PanelAdwords extends JPanel {
 				String iStr = st.nextToken();
 				String name = st.nextToken();
 				String site = st.nextToken();
-				String mail = st.nextToken();
-				System.out.println(" " + iStr + "  " + name + "   " + site + "  " + mail);
+				String mailTo = st.nextToken();
+				boolean isArmed = this.checkBox.isEnabled();
+				System.out.println(" isArmed:" + isArmed + "| i :" + iStr + " | nam: " + name + " |  site:" + site + " |  mail." + mail);
+				String text = this.textAreaMAil.getText();
+				String subject = this.textAreaObject.getText();
+				String from = this.textAreaFrom.getText();
+				this.sendMail(mailTo, subject, text, from, site);
+
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			this.textAreaLog.append("" + e);
 			e.printStackTrace();
 		}
 	}
@@ -351,18 +349,21 @@ public class PanelAdwords extends JPanel {
 
 	private void sendMail(String to, String subject, String text, String from, String dollard_1) {
 		text = text.replace("$1", dollard_1);
-		this.textAreaLog.append("sendMAilTest to : "+to+"  subject : "+subject+" text.length : "+text.length()+"\n");
+		this.textAreaLog.append("sendMAilTest to : " + to + " | subject : " + subject +" | $1 :"+dollard_1+ " | text.length : " + text.length() + "\n");
 		ClientSmtp clientSmtp = this.getClientSmtp();
-		//clientSmtp.sendMessageHtml(to, subject+" ", text, from);
-		clientSmtp.sendMessage(to, subject+" ", text, from);
-		System.out.println("sendMAil to:"+to+" object: "+subject+"  from: "+from);
+		// clientSmtp.sendMessageHtml(to, subject+" ", text, from);
+		boolean isArmed = this.checkBox.isEnabled();
+		if (isArmed) {
+			clientSmtp.sendMessage(to, subject + " ", text, from);
+		}
+		System.out.println("sendMAil isArmed: "+isArmed+" to:" + to + " subject: " + subject + "  from: " + from);
 	}
 
 	private void sendEditMailTest() {
 		System.out.println("Edit MailTest");
 		this.showCard(P_MAIL_TEST);
 	}
-	
+
 	protected void setFrom() {
 		this.showCard(P_FROM);
 	}
@@ -382,8 +383,8 @@ public class PanelAdwords extends JPanel {
 		this.labelCommand.setText(k);
 		cardLayoutPanelCenter.show(panelCenter, k);
 	}
-	
-	private ClientSmtp getClientSmtp(){
+
+	private ClientSmtp getClientSmtp() {
 		BeanFactory beanFactory = UtilSpring.getInstance().getBeanFactory();
 		Object o = beanFactory.getBean("smtp");
 		return (ClientSmtp) o;
