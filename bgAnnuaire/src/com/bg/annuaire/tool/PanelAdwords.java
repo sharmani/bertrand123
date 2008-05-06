@@ -323,7 +323,7 @@ public class PanelAdwords extends JPanel {
 				String site = st.nextToken();
 				String mailTo = st.nextToken();
 				boolean isArmed = this.checkBox.isEnabled();
-				System.out.println(" isArmed:" + isArmed + "| i :" + iStr + " | nam: " + name + " |  site:" + site + " |  mail." + mail);
+				System.out.println(" isArmed:" + isArmed + "| i :" + iStr + " | nam: " + name + " |  site:" + site + " |  mail." + mailTo);
 				String text = this.textAreaMAil.getText();
 				String subject = this.textAreaObject.getText();
 				String from = this.textAreaFrom.getText();
